@@ -8,19 +8,22 @@
 
 ## החלטות מחייבות
 
-### טיפוגרפיה
-- Display: **Frank Ruhl Libre** (Google Fonts, סאבסט עברי) — משקלים 500, 900. כותרת hero בגודל clamp(3rem, 9vw, 8.5rem).
-- Body: **Assistant** — משקלים 300, 400, 600.
-- מספור סקשנים לטיני קטן (letter-spacing רחב): "01 — המסיק". **letter-spacing מותר אך ורק על טקסט לטיני/ספרות — לעולם לא על אותיות עבריות.**
-- fallback stack: `"Frank Ruhl Libre", "David Libre", Georgia, serif` / `Assistant, "Segoe UI", Arial, sans-serif` + `font-display: swap` + preconnect.
+### טיפוגרפיה (עודכן ע"פ hebrew-3d-sites — אנטי-פטרן B1)
+- Display: **Bellefair** (סריף יוקרתי, קובץ מקומי OFL) — hero בגודל clamp(40px, 7vw, 110px). לא Frank Ruhl (AI-tell מזוהה).
+- Body: **Assistant** (variable, קובץ מקומי OFL).
+- פונטים מוטמעים מקומית ב-`assets/fonts/` — אפס תלות ב-CDN. `font-display: swap` + fallback: `Bellefair, "David Libre", Georgia, serif` / `Assistant, "Segoe UI", Arial, sans-serif`.
+- תיוג פרקים אינטגרלי בעברית ("פרק ראשון · המסיק") — לא מספור לטיני mono (אנטי-פטרן F6/C3). letter-spacing לעולם לא על עברית.
 - line-height עברי נכון: 1.15 לכותרות, 1.7 לטקסט רץ.
 
 ### פלטה (CSS custom properties)
 - `--bone: #F2EDE2` (רקע ראשי)
 - `--ink: #20241C` (טקסט, רקע סקשן כהה)
 - `--olive: #3E4A33` (משני)
-- `--amber: #B8862B` (אקצנט — קווים, מספור, hover)
+- `--terracotta: #C0482B` (אקצנט — עודכן מענבר-זהב, שהוא הקלישאה הצפויה לשמן זית; טרקוטה = הבחירה האנטי-צפויה)
 - אין צבע חמישי. אין גרדיאנטים. אין צללים רכים גדולים.
+
+### The One Decision (hebrew-3d-sites)
+ההחלטה החזקה היחידה: **צילום full-bleed בגריד אסימטרי קיצוני (2fr/1fr, 1fr/3fr) + Bellefair**. כל השאר שמרני ושקט. אין custom cursor, אין Lenis, אין SplitType, אין marquee, אין counters, אין noise overlay, אין תיוג mono.
 
 ### אנטי-קלישאות (חוזה מחייב)
 אסור: גרדיאנט סגול/כחול, glassmorphism, border-radius > 4px על כרטיסים, אימוג'י, אייקוני 🚀/✨, כותרת "הפתרון המושלם", כפתורי pill ענקיים עם צל, hero מרכזי סימטרי גנרי, Inter/Rubik כפונט יחיד.

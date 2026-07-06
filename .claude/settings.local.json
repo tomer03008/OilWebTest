@@ -6,7 +6,12 @@
       "Skill(anthropic-skills:plan-eng-review)",
       "Skill(anthropic-skills:plan-eng-review:*)",
       "Skill(anthropic-skills:autoplan)",
-      "Skill(anthropic-skills:autoplan:*)"
+      "Skill(anthropic-skills:autoplan:*)",
+      "Bash(cp /c/Users/ADMIN/.claude/skills/hebrew-3d-sites/fonts/Bellefair-Regular.ttf /c/Users/ADMIN/.claude/skills/hebrew-3d-sites/fonts/Assistant-VF.ttf assets/fonts/)",
+      "Bash(curl -s \"https://api.openverse.org/v1/images/?q=olive%20grove%20trees&license_type=commercial&page_size=8&aspect_ratio=wide\" -H \"User-Agent: Mozilla/5.0\")",
+      "PowerShell($r = Invoke-WebRequest -Uri \"https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=olive+grove&gsrnamespace=6&gsrlimit=5&prop=imageinfo&iiprop=url&iiurlwidth=1600&format=json\" -UseBasicParsing -TimeoutSec 25 -Headers @{\"User-Agent\"=\"KeremAdarSiteBuilder/1.0\"}; $r.StatusCode; $r.Content.Substring\\(0, [Math]::Min\\(600, $r.Content.Length\\)\\))",
+      "PowerShell($r = Invoke-WebRequest -Uri \"https://unsplash.com/napi/search/photos?query=olive+grove&per_page=6&orientation=landscape\" -UseBasicParsing -TimeoutSec 25 -Headers @{\"User-Agent\"=\"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\)\"}; $j = $r.Content | ConvertFrom-Json; $j.results | ForEach-Object { \"$\\($_.id\\) | $\\($_.width\\)x$\\($_.height\\) | $\\($_.description\\) $\\($_.alt_description\\)\" })",
+      "PowerShell($files = [ordered]@{ \"hero-k\"=\"Korfu \\(GR\\), Agii Douli, Olivenhain -- 2018 -- 1284-8.jpg\"; \"hero-lun\"=\"Lun Olive-Gardens \\(2\\).jpg\"; \"harvest-t\"=\"Raccolta olive in ambito familiare, tradizione toscana.jpg\"; \"crate\"=\"Tradizioni familiari Raccolta olive wlk olive in cassetta.jpg\"; \"combs\"=\"Olive harvest combs. Anthidona. Greece.jpg\" }; foreach \\($k in $files.Keys\\) { try { $u = \"https://commons.wikimedia.org/wiki/Special:FilePath/\" + [uri]::EscapeDataString\\($files[$k]\\) + \"?width=1600\"; Invoke-WebRequest -Uri $u -OutFile \"C:\\\\Users\\\\ADMIN\\\\Desktop\\\\ex\\\\assets\\\\img\\\\candidates\\\\$k.jpg\" -UseBasicParsing -TimeoutSec 60 -Headers @{\"User-Agent\"=\"KeremAdarSiteBuilder/1.0 \\(personal project; gemimed@gmail.com\\)\"} -ErrorAction Stop; $size = \\(Get-Item \"C:\\\\Users\\\\ADMIN\\\\Desktop\\\\ex\\\\assets\\\\img\\\\candidates\\\\$k.jpg\"\\).Length; \"$k OK $\\([math]::Round\\($size/1KB\\)\\)KB\" } catch { \"$k FAIL $\\($_.Exception.Message\\)\" }; Start-Sleep -Seconds 6 })"
     ]
   }
 }
