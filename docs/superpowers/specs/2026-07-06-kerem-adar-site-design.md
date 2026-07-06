@@ -11,7 +11,8 @@
 ### טיפוגרפיה
 - Display: **Frank Ruhl Libre** (Google Fonts, סאבסט עברי) — משקלים 500, 900. כותרת hero בגודל clamp(3rem, 9vw, 8.5rem).
 - Body: **Assistant** — משקלים 300, 400, 600.
-- מספור סקשנים לטיני קטן (letter-spacing רחב): "01 — המסיק".
+- מספור סקשנים לטיני קטן (letter-spacing רחב): "01 — המסיק". **letter-spacing מותר אך ורק על טקסט לטיני/ספרות — לעולם לא על אותיות עבריות.**
+- fallback stack: `"Frank Ruhl Libre", "David Libre", Georgia, serif` / `Assistant, "Segoe UI", Arial, sans-serif` + `font-display: swap` + preconnect.
 - line-height עברי נכון: 1.15 לכותרות, 1.7 לטקסט רץ.
 
 ### פלטה (CSS custom properties)
@@ -26,7 +27,7 @@
 חובה: גריד אסימטרי, קווי 1px, תמונות full-bleed לפחות פעם אחת, טיפוגרפיה כגיבורה, פוטר עשיר אמיתי.
 
 ### מבנה (סדר סקשנים)
-1. **Nav** — דק, קבוע, לוגו טיפוגרפי "כרם אדר", 4 עוגנים, רקע bone שקוף-מטושטש קלות בגלילה.
+1. **Nav** — דק, קבוע, לוגו טיפוגרפי "כרם אדר", 4 עוגנים, רקע bone אטום 96% + קו תחתון 1px בגלילה (בלי blur — עקביות עם חוזה האנטי-קלישאות).
 2. **Hero** — כותרת ענק "שמן של מקום אחד", תת-כותרת, תמונת כרם גדולה בגזרה אסימטרית, תגית "מסיק 2025 · הגליל העליון".
 3. **מניפסט** — סקשן טקסטואלי, פסקה גדולה (1.6rem) על ink כהה או bone, עם מילה מודגשת בענבר.
 4. **מהעץ לבקבוק** — ציר תהליך בשלושה פרקים (01 המסיק / 02 הכבישה / 03 הביקבוק), כל פרק: מספר, כותרת, פסקה, תמונה. פריסה מתחלפת ימין/שמאל.
@@ -44,6 +45,8 @@
 - `index.html` יחיד + `assets/css/style.css` + `assets/js/main.js`.
 - ונילה בלבד. Google Fonts בלבד כתלות חיצונית.
 - JS: IntersectionObserver ל-reveal, nav scroll state. בלי ספריות.
+- **Progressive enhancement:** אנימציות reveal חלות רק תחת `html.js` (המחלקה מתווספת ב-JS); ללא JS כל התוכן גלוי. `prefers-reduced-motion: reduce` מכבה את כל האנימציות.
+- **ביצועים:** תמונות ברוחב מקס' 1600px (q=80), `loading="lazy"` מתחת לקפל, preload ל-hero, `width`/`height` מפורשים על כל `<img>` נגד CLS.
 - `dir="rtl" lang="he"`, סמנטיקה מלאה (header/main/section/footer), alt לכל תמונה, ניגודיות AA.
 
 ### רספונסיביות
@@ -57,3 +60,12 @@ Breakpoints: 1200 / 768 / 480. במובייל: hero טיפוגרפי נשמר ג
 
 ## מחוץ לתחום (YAGNI)
 עגלת קניות, טפסים עובדים בצד שרת, רב-לשוניות, CMS, אנימציות 3D/WebGL.
+
+## GSTACK REVIEW REPORT
+
+| Review | Runs | Status | Findings |
+|--------|------|--------|----------|
+| Eng Review (/plan-eng-review) | 1 | CLEAR | 4 issues, 0 critical gaps — כולם נפתרו והוטמעו בספק |
+| CEO/Design/DX (/autoplan) | pending | — | — |
+
+**VERDICT:** ENG CLEARED — מוכן ל-/autoplan ואז מימוש.

@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Skill(anthropic-skills:office-hours)",
-      "Skill(anthropic-skills:office-hours:*)"
+      "Skill(anthropic-skills:office-hours:*)",
+      "Skill(anthropic-skills:plan-eng-review)",
+      "Skill(anthropic-skills:plan-eng-review:*)",
+      "Skill(anthropic-skills:autoplan)",
+      "Skill(anthropic-skills:autoplan:*)"
     ]
   }
 }
