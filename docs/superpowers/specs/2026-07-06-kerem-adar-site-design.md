@@ -47,7 +47,10 @@
 - JS: IntersectionObserver ל-reveal, nav scroll state. בלי ספריות.
 - **Progressive enhancement:** אנימציות reveal חלות רק תחת `html.js` (המחלקה מתווספת ב-JS); ללא JS כל התוכן גלוי. `prefers-reduced-motion: reduce` מכבה את כל האנימציות.
 - **ביצועים:** תמונות ברוחב מקס' 1600px (q=80), `loading="lazy"` מתחת לקפל, preload ל-hero, `width`/`height` מפורשים על כל `<img>` נגד CLS.
-- `dir="rtl" lang="he"`, סמנטיקה מלאה (header/main/section/footer), alt לכל תמונה, ניגודיות AA.
+- `dir="rtl" lang="he"`, סמנטיקה מלאה (header/main/section/footer), alt תיאורי לכל תמונה, ניגודיות AA.
+- **נגישות (design review):** skip-link בראש העמוד, `aria-label` לניווט, `:focus-visible` באאוטליין ענבר.
+- **מצבי אינטראקציה (design review):** לינקים — קו תחתון מונפש ב-hover; כפתורים — היפוך צבע עדין; כל אלמנט אינטראקטיבי חייב מצב hover + focus מוגדר.
+- **SEO/שיתוף (CEO review):** `<title>` מלא, meta description בעברית, תגיות Open Graph + תמונת OG, favicon (SVG של עלה זית).
 
 ### רספונסיביות
 Breakpoints: 1200 / 768 / 480. במובייל: hero טיפוגרפי נשמר גדול, גריד מתקפל לעמודה, ציר התהליך אנכי.
@@ -65,7 +68,11 @@ Breakpoints: 1200 / 768 / 480. במובייל: hero טיפוגרפי נשמר ג
 
 | Review | Runs | Status | Findings |
 |--------|------|--------|----------|
-| Eng Review (/plan-eng-review) | 1 | CLEAR | 4 issues, 0 critical gaps — כולם נפתרו והוטמעו בספק |
-| CEO/Design/DX (/autoplan) | pending | — | — |
+| Eng Review (/plan-eng-review) | 1 | CLEAR | 4 issues, 0 critical gaps — הוטמעו בספק |
+| CEO Review (/autoplan) | 1 | CLEAR | הרחבה אחת אושרה (SEO/OG/favicon), premises תקפים |
+| Design Review (/autoplan) | 1 | CLEAR | 2 תיקונים (focus/hover states, נגישות), ציון כולל 8.7/10 |
+| DX Review (/autoplan) | — | SKIPPED | אין scope פונה-מפתחים |
 
-**VERDICT:** ENG CLEARED — מוכן ל-/autoplan ואז מימוש.
+**Decision Audit:** 14 החלטות — 12 אוטומטיות לפי 6 העקרונות, 2 החלטות טעם אושרו (סקשן כהה, תוויות לטיניות). Single-reviewer mode (codex לא זמין).
+
+**VERDICT:** ALL CLEARED — מאושר למימוש.
