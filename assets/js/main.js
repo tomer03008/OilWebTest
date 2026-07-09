@@ -1,6 +1,7 @@
-// כרם אדר — הכוריאוגרפיה.
-// המסע (עץ ← מסיק ← כבישה ← בקבוק) מוצמד לגלילה; הכול מתפרק בכבוד
-// בלי JS, בלי CDN או עם prefers-reduced-motion.
+// כרם אדר — the pinned bottle showcase.
+// Scrolling inside the showcase doesn't move the page: it swaps the bottle,
+// the floating ingredients, the texts and the background color. Everything
+// degrades to a stacked catalogue without JS / GSAP / with reduced motion.
 
 document.documentElement.classList.add('js');
 
@@ -13,11 +14,15 @@ if (forceStatic) document.documentElement.classList.add('static');
 
 /* ============ NAV ============ */
 const nav = document.querySelector('.nav');
-const setNav = () => nav.classList.toggle('is-scrolled', window.scrollY > 30);
+const hero = document.querySelector('.hero');
+const setNav = () => {
+  const past = window.scrollY > (hero ? hero.offsetHeight - 90 : 90);
+  nav.classList.toggle('is-solid', past);
+};
 setNav();
 window.addEventListener('scroll', setNav, { passive: true });
 
-/* ============ LENIS SMOOTH SCROLL ============ */
+/* ============ LENIS ============ */
 let lenis = null;
 if (!reduceMotion && !forceStatic && typeof window.Lenis !== 'undefined') {
   lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 0.95 });
@@ -31,9 +36,28 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     const target = document.querySelector(a.getAttribute('href'));
     if (!target) return;
     e.preventDefault();
-    if (lenis) lenis.scrollTo(target, { offset: -60, duration: 1.3 });
+    if (lenis) lenis.scrollTo(target, { offset: -56, duration: 1.3 });
     else target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
   });
+});
+
+/* ============ BOTTLE SLOTS ============ */
+// drop transparent PNGs at assets/img/bottle-1.png / bottle-2.png / bottle-3.png
+// and each slide upgrades from the placeholder automatically.
+document.querySelectorAll('.bottle-inner[data-bottle]').forEach(async holder => {
+  const src = holder.dataset.bottle;
+  try {
+    const head = await fetch(src, { method: 'HEAD' });
+    if (!head.ok) return;
+  } catch { return; }
+  const img = new Image();
+  img.src = src;
+  img.alt = '';
+  img.decoding = 'async';
+  img.addEventListener('load', () => {
+    holder.querySelector('.bottle-ph')?.remove();
+    holder.appendChild(img);
+  }, { once: true });
 });
 
 /* ============ MOTION ============ */
@@ -41,131 +65,108 @@ if (motionOn) {
   gsap.registerPlugin(ScrollTrigger);
   if (lenis) lenis.on('scroll', ScrollTrigger.update);
 
-  /* --- hero entrance --- */
+  /* --- hero entrance + slow drift out --- */
   gsap.timeline({ defaults: { ease: 'power3.out' } })
-    .to('.hero__kicker .line__inner', { y: 0, duration: 0.8 }, 0.15)
-    .to('.hero__title .line__inner', { y: 0, duration: 1, stagger: 0.13 }, 0.3)
-    .to('.hero__lede .line__inner', { y: 0, duration: 0.85 }, 0.7)
-    .to('.hero__ctas', { opacity: 1, duration: 0.7 }, 0.95)
-    .to('.hero__rule', { scaleX: 1, duration: 1, ease: 'power2.inOut' }, 1.0)
-    .from('.hero__scene svg', { y: 70, opacity: 0, duration: 1.2, ease: 'power2.out' }, 0.35);
+    .fromTo('.hero__media img', { scale: 1.08 }, { scale: 1, duration: 2.4, ease: 'power2.out' }, 0)
+    .to('.hero__kicker .line__inner', { y: 0, duration: 0.8 }, 0.2)
+    .to('.hero__title .line__inner', { y: 0, duration: 1, stagger: 0.13 }, 0.35)
+    .to('.hero__lede .line__inner', { y: 0, duration: 0.85 }, 0.75)
+    .to('.hero__ctas', { opacity: 1, duration: 0.7 }, 1.0)
+    .to('.hero__rule', { scaleX: 1, duration: 1, ease: 'power2.inOut' }, 1.05);
 
-  /* --- hero grove: gentle idle sway + an olive drops now and then --- */
-  gsap.to('#hero-canopy', {
-    rotation: 1.3,
-    svgOrigin: '262 400',
-    duration: 4.5,
-    ease: 'sine.inOut',
-    yoyo: true,
-    repeat: -1
+  gsap.to('.hero__media', {
+    yPercent: 14, ease: 'none',
+    scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
   });
-
-  const heroDrops = gsap.utils.toArray('#hero-drops ellipse');
-  const dropOne = (el, delay) => {
-    gsap.timeline({ delay, onComplete: () => dropOne(el, gsap.utils.random(3, 7)) })
-      .set(el, { opacity: 1, y: 0 })
-      .to(el, { y: 215, duration: 0.9, ease: 'power2.in' })
-      .to(el, { opacity: 0, duration: 0.25 }, '-=0.1');
-  };
-  heroDrops.forEach((el, i) => dropOne(el, 2 + i * 2.3));
-
-  /* --- click the tree: shake + a burst of olives --- */
-  const tree = document.getElementById('hero-tree');
-  let shaking = false;
-  tree.addEventListener('click', () => {
-    if (shaking) return;
-    shaking = true;
-    gsap.timeline({ onComplete: () => { shaking = false; } })
-      .to('#hero-canopy', { rotation: 2.6, svgOrigin: '262 400', duration: 0.09, yoyo: true, repeat: 7, ease: 'power1.inOut' })
-      .to('#hero-canopy', { rotation: 0, svgOrigin: '262 400', duration: 0.3 });
-    heroDrops.forEach((el, i) => {
-      gsap.timeline()
-        .set(el, { opacity: 1, y: 0, x: gsap.utils.random(-14, 14) })
-        .to(el, { y: 215, duration: 0.75 + i * 0.08, ease: 'power2.in' })
-        .to(el, { opacity: 0, duration: 0.2 }, '-=0.08');
-    });
-  });
-
-  /* --- hero parallax out --- */
   gsap.to('.hero__content', {
-    yPercent: -14, opacity: 0.35, ease: 'none',
+    yPercent: -10, opacity: 0.3, ease: 'none',
     scrollTrigger: { trigger: '.hero', start: '55% 40%', end: 'bottom top', scrub: true }
   });
 
-  /* ============ THE JOURNEY — pinned scroll story ============ */
-  const scenes = {
-    branch: document.querySelector('.scene--branch'),
-    press: document.querySelector('.scene--press'),
-    oil: document.querySelector('.scene--oil')
-  };
-  const captions = gsap.utils.toArray('.caption');
-  const dots = gsap.utils.toArray('.journey__progress .dot');
+  /* ============ THE SHOWCASE ============ */
+  const showcase = document.querySelector('.showcase');
+  const bgEl = document.querySelector('.showcase__bg');
+  const watermark = document.querySelector('.showcase__watermark');
+  const slides = gsap.utils.toArray('.slide');
+  const dots = gsap.utils.toArray('.showcase__progress .dot');
+  const N = slides.length;
 
-  const showScene = (key) => {
-    Object.entries(scenes).forEach(([k, el]) => el.classList.toggle('is-active', k === key));
-  };
-  let currentBeat = -1;
-  const showBeat = (i) => {
-    if (i === currentBeat) return;
-    currentBeat = i;
-    captions.forEach((c, ci) => c.classList.toggle('is-active', ci === i));
+  // idle drift: every floating element breathes forever, out of phase
+  document.querySelectorAll('.float').forEach((el, i) => {
+    gsap.to(el, {
+      y: gsap.utils.random(-16, -30),
+      rotation: gsap.utils.random(-5, 5),
+      duration: gsap.utils.random(2.6, 4.2),
+      ease: 'sine.inOut',
+      yoyo: true,
+      repeat: -1,
+      delay: i * 0.35
+    });
+  });
+  // idle float lives on the INNER element — the scroll timeline owns the outer,
+  // so the two never write to the same transform property.
+  document.querySelectorAll('.bottle-inner').forEach((el, i) => {
+    gsap.to(el, { y: -14, rotation: 1.2, duration: 3.6, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: i * 0.4 });
+  });
+
+  let current = 0;
+  const setDots = (i) => {
+    if (i === current) return;
+    current = i;
     dots.forEach((d, di) => d.classList.toggle('is-active', di === i));
-    showScene(i <= 1 ? 'branch' : i === 2 ? 'press' : 'oil');
+    showcase.classList.toggle('is-dark', slides[i].classList.contains('slide--dark'));
   };
 
-  // prepare the oil stream for line-drawing
-  const stream = document.getElementById('oil-stream');
-  const streamLen = 164;
-  stream.setAttribute('stroke-dasharray', streamLen);
-  stream.setAttribute('stroke-dashoffset', streamLen);
-
-  const jt = gsap.timeline({
-    defaults: { ease: 'none' },
+  const st = gsap.timeline({
+    defaults: { ease: 'power2.inOut' },
     scrollTrigger: {
-      trigger: '.journey',
+      trigger: '.showcase',
       start: 'top top',
-      end: '+=3400',
+      end: '+=2600',
       pin: true,
-      scrub: 0.55,
-      onUpdate: (self) => showBeat(Math.min(3, Math.floor(self.progress * 4)))
+      scrub: true,
+      onUpdate: (self) => setDots(Math.min(N - 1, Math.floor(self.progress * N)))
     }
   });
 
-  jt
-    /* beat 0 — olives ripen on the branch */
-    .from('#branch-olives ellipse', {
-      scale: 0, svgOrigin: '440 160', transformOrigin: 'center', stagger: 0.09, duration: 0.55, ease: 'back.out(2.2)'
-    }, 0.05)
-    .fromTo('#branch-sway', { rotation: -1.2 }, { rotation: 1.2, svgOrigin: '620 60', duration: 0.95 }, 0.05)
+  slides.forEach((slide, i) => {
+    const parts = {
+      bottle: slide.querySelector('.slide__bottle'),
+      floats: slide.querySelectorAll('.float'),
+      text: slide.querySelectorAll('.slide__text > *')
+    };
 
-    /* beat 1 — the shake: olives fall into the net */
-    .to('#branch-sway', { rotation: -2.2, svgOrigin: '620 60', duration: 0.1, yoyo: true, repeat: 5, ease: 'power1.inOut' }, 1.05)
-    .set('#fall-olives', { opacity: 1 }, 1.12)
-    .set('#branch-olives', { opacity: 0 }, 1.12)
-    .to('#fall-olives ellipse', {
-      y: (i, el) => 460 - parseFloat(el.getAttribute('cy')),
-      x: () => gsap.utils.random(-24, 24),
-      stagger: 0.06,
-      duration: 0.5,
-      ease: 'power2.in'
-    }, 1.15)
-    .to('#net-cloth', { attr: { d: 'M120,440 Q310,545 500,440' }, duration: 0.18, yoyo: true, repeat: 1, ease: 'power1.out' }, 1.62)
-    .to('#net-olives', { opacity: 1, duration: 0.12 }, 1.6)
-    .to('#fall-olives', { opacity: 0, duration: 0.12 }, 1.62)
+    if (i > 0) {
+      // arrive: background morphs, bottle rises in with a tilt, floats pop, text staggers
+      st.set(slide, { visibility: 'visible' }, i - 0.42);
+      st.to(bgEl, { backgroundColor: slide.dataset.bg, duration: 0.5 }, i - 0.45);
+      st.fromTo(watermark, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.3,
+        onStart: () => { watermark.textContent = slide.dataset.watermark; },
+        onReverseComplete: () => { watermark.textContent = slides[i - 1].dataset.watermark; }
+      }, i - 0.18);
+      st.to(slide, { opacity: 1, duration: 0.28 }, i - 0.3);
+      st.fromTo(parts.bottle, { y: 190, rotation: 9, opacity: 0 },
+        { y: 0, rotation: 0, opacity: 1, duration: 0.42, ease: 'power3.out' }, i - 0.3);
+      st.fromTo(parts.floats, { scale: 0.4, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.3, stagger: 0.045, ease: 'back.out(1.8)' }, i - 0.22);
+      st.fromTo(parts.text, { y: 34, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.3, stagger: 0.04, ease: 'power3.out' }, i - 0.24);
+    }
 
-    /* beat 2 — the millstone turns */
-    .fromTo('#millstone', { rotation: 0 }, { rotation: 620, svgOrigin: '310 330', duration: 0.95 }, 2.02)
+    if (i < N - 1) {
+      // leave: bottle lifts away, floats scatter, text fades up
+      st.to(parts.bottle, { y: -170, rotation: -7, opacity: 0, duration: 0.4, ease: 'power2.in' }, i + 0.58);
+      st.to(parts.floats, { scale: 0.5, opacity: 0, duration: 0.28, stagger: 0.03 }, i + 0.6);
+      st.to(parts.text, { y: -26, opacity: 0, duration: 0.28, stagger: 0.03 }, i + 0.62);
+      st.to(slide, { opacity: 0, duration: 0.24, onComplete: () => gsap.set(slide, { visibility: 'hidden' }),
+        onReverseComplete: () => gsap.set(slide, { visibility: 'visible' }) }, i + 0.72);
+      st.to(watermark, { opacity: 0, y: -40, duration: 0.24 }, i + 0.6);
+    }
+  });
+  // hold the last slide for a beat before the pin releases
+  st.to({}, { duration: 0.35 }, N - 0.35);
 
-    /* beat 3 — oil pours, the bottle fills, the cork seals it */
-    .set('#cork', { opacity: 0 }, 3.0)
-    .to(stream, { strokeDashoffset: 0, duration: 0.22 }, 3.04)
-    .fromTo('#oil-drop', { attr: { cy: 150 }, opacity: 1 }, { attr: { cy: 295 }, opacity: 0, duration: 0.2, repeat: 2 }, 3.1)
-    .to('#oil-level', { attr: { y: 328 }, duration: 0.56 }, 3.18)
-    .to(stream, { strokeDashoffset: -164, duration: 0.14 }, 3.76)
-    .to('#label', { opacity: 1, duration: 0.12 }, 3.82)
-    .fromTo('#cork', { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.1 }, 3.9);
-
-  /* ============ generic rise-ins ============ */
+  /* ============ STORY ============ */
   gsap.utils.toArray('.st-rise').forEach(el => {
     gsap.to(el, {
       opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
@@ -173,7 +174,6 @@ if (motionOn) {
     });
   });
 
-  /* ============ story statement — words surface with the scroll ============ */
   const statement = document.querySelector('[data-words]');
   if (statement) {
     const words = statement.textContent.trim().split(/\s+/);
@@ -184,29 +184,14 @@ if (motionOn) {
     });
   }
 
-  /* ============ bottles breathe on entry ============ */
-  gsap.utils.toArray('.bottle-item__visual svg').forEach((svg, i) => {
-    gsap.from(svg, {
-      y: 46, opacity: 0, duration: 0.85, delay: i * 0.12, ease: 'power3.out',
-      scrollTrigger: { trigger: svg.closest('.shelf__grid'), start: 'top 80%' }
+  gsap.utils.toArray('.story__photo img').forEach(img => {
+    gsap.to(img, {
+      scale: 1, ease: 'none',
+      scrollTrigger: { trigger: img.closest('.story__photo'), start: 'top bottom', end: 'bottom top', scrub: true }
     });
   });
 } else {
-  // static tableau: every scene at its "finished" state, everything visible
   document.querySelectorAll('.st-rise').forEach(el => { el.style.opacity = 1; el.style.transform = 'none'; });
-  document.querySelectorAll('.caption').forEach(c => c.classList.add('is-active'));
-  document.querySelectorAll('.scene').forEach(s => s.classList.add('is-active'));
-  const netOlives = document.getElementById('net-olives');
-  if (netOlives) netOlives.setAttribute('opacity', '1');
-  const oilLevel = document.getElementById('oil-level');
-  if (oilLevel) oilLevel.setAttribute('y', '328');
-  const label = document.getElementById('label');
-  if (label) label.setAttribute('opacity', '1');
-  // finished tableau: the bottle is corked, so no stream
-  const stream = document.getElementById('oil-stream');
-  if (stream) stream.setAttribute('opacity', '0');
-  const drop = document.getElementById('oil-drop');
-  if (drop) drop.setAttribute('opacity', '0');
 }
 
 /* ============ ORDER DRAWER ============ */

@@ -4,14 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>כרם אדר · בית בד משפחתי בגליל העליון</title>
-  <meta name="description" content="בית בד משפחתי בגליל העליון. שמן זית כתית מעולה בכבישה קרה — קטיף ידני, כבישה בתוך שש שעות, שלושה דורות של מסיק. מהעץ לבקבוק בגלילה אחת.">
+  <meta name="description" content="בית בד משפחתי בגליל העליון. שמן זית כתית מעולה בכבישה קרה — קטיף ידני, כבישה בתוך שש שעות, שלושה דורות של מסיק. שלושה שמנים, שלוש חלקות.">
   <meta property="og:title" content="כרם אדר · בית בד משפחתי בגליל העליון">
-  <meta property="og:description" content="שמן של מקום אחד. מהעץ לבקבוק — בגלילה אחת.">
+  <meta property="og:description" content="שמן של מקום אחד. שלושה שמנים, שלוש חלקות, מסיק אחד.">
   <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/img/grove-hero.jpg">
   <meta property="og:locale" content="he_IL">
   <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
   <link rel="preload" href="assets/fonts/SecularOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="assets/fonts/Assistant-VF.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="assets/img/grove-hero.jpg" as="image">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -23,8 +25,7 @@
       כרם אדר
     </a>
     <nav class="nav__links" aria-label="ניווט ראשי">
-      <a href="#journey">המסע</a>
-      <a href="#shelf">השמנים</a>
+      <a href="#oils">השמנים</a>
       <a href="#story">הסיפור</a>
       <a href="#visit">ביקור</a>
     </nav>
@@ -35,315 +36,142 @@
 
     <!-- ================= HERO ================= -->
     <section class="hero">
+      <figure class="hero__media" aria-hidden="true">
+        <img src="assets/img/grove-hero.jpg" width="1600" height="1068" fetchpriority="high" alt="">
+      </figure>
+      <div class="hero__scrim" aria-hidden="true"></div>
       <div class="hero__content">
         <p class="hero__kicker"><span class="line"><span class="line__inner">בית בד משפחתי · הגליל העליון · נטוע 1963</span></span></p>
         <h1 class="hero__title">
-          <span class="line"><span class="line__inner">מהעץ לבקבוק,</span></span>
-          <span class="line"><span class="line__inner">בשש שעות.</span></span>
+          <span class="line"><span class="line__inner">שמן של</span></span>
+          <span class="line"><span class="line__inner">מקום אחד.</span></span>
         </h1>
-        <p class="hero__lede"><span class="line"><span class="line__inner">אלף ומאתיים עצי זית על מדרון אחד. קטיף ידני, כבישה קרה באותו הלילה, ושמן שמריחים בו את העמק.</span></span></p>
+        <p class="hero__lede"><span class="line"><span class="line__inner">אלף ומאתיים עצי זית על מדרון אחד. קטיף ידני, כבישה קרה באותו הלילה — ושמן שמריחים בו את העמק.</span></span></p>
         <div class="hero__ctas">
-          <a class="btn btn--solid btn-press" href="#shelf">אל המדף</a>
-          <a class="btn btn--ghost btn-press" href="#journey">איך זה נעשה</a>
+          <a class="btn btn--gold btn-press" href="#oils">לשלושת השמנים</a>
+          <a class="btn btn--outline btn-press" href="#story">הסיפור שלנו</a>
         </div>
       </div>
-
-      <!-- illustrated grove: clicking the tree shakes olives loose -->
-      <div class="hero__scene" aria-hidden="true">
-        <svg id="grove" viewBox="0 0 1440 620" preserveAspectRatio="xMidYMax slice">
-          <circle id="grove-sun" cx="1130" cy="150" r="86" fill="#E7D8A6" opacity="0.65"/>
-          <path d="M0,400 C260,340 520,356 780,378 C1030,398 1240,356 1440,384 L1440,620 L0,620 Z" fill="#DDE1C9"/>
-          <path d="M0,462 C240,420 540,442 800,456 C1060,470 1250,432 1440,458 L1440,620 L0,620 Z" fill="#C3CDA4"/>
-          <!-- distant grove rows -->
-          <g fill="#9FAF7F">
-            <ellipse cx="880" cy="470" rx="26" ry="18"/><rect x="877" y="482" width="6" height="14" fill="#8A7A64"/>
-            <ellipse cx="990" cy="458" rx="22" ry="15"/><rect x="987" y="468" width="5" height="12" fill="#8A7A64"/>
-            <ellipse cx="1090" cy="472" rx="28" ry="19"/><rect x="1087" y="484" width="6" height="14" fill="#8A7A64"/>
-            <ellipse cx="1210" cy="460" rx="21" ry="14"/><rect x="1207" y="470" width="5" height="12" fill="#8A7A64"/>
-            <ellipse cx="1320" cy="474" rx="25" ry="17"/><rect x="1317" y="486" width="6" height="13" fill="#8A7A64"/>
-          </g>
-          <path d="M0,520 C320,492 760,506 1440,500 L1440,620 L0,620 Z" fill="#A8B587"/>
-
-          <!-- the family tree -->
-          <g id="hero-tree" style="cursor:pointer" pointer-events="bounding-box">
-            <path d="M268,560 C262,500 250,462 262,414 C268,390 258,368 250,352" stroke="#6B5843" stroke-width="26" stroke-linecap="round" fill="none"/>
-            <path d="M262,470 C296,448 316,424 322,396" stroke="#6B5843" stroke-width="16" stroke-linecap="round" fill="none"/>
-            <path d="M264,430 C232,410 216,388 212,362" stroke="#6B5843" stroke-width="13" stroke-linecap="round" fill="none"/>
-            <g id="hero-canopy">
-              <ellipse cx="176" cy="330" rx="86" ry="64" fill="#77875B"/>
-              <ellipse cx="330" cy="322" rx="92" ry="68" fill="#69794F"/>
-              <ellipse cx="250" cy="270" rx="104" ry="74" fill="#83936A"/>
-              <ellipse cx="252" cy="342" rx="120" ry="70" fill="#77875B"/>
-              <ellipse cx="196" cy="292" rx="44" ry="30" fill="#8FA076" opacity="0.85"/>
-              <g id="hero-olives" fill="#3D4829">
-                <ellipse cx="168" cy="316" rx="7" ry="9.5"/>
-                <ellipse cx="216" cy="268" rx="7" ry="9.5"/>
-                <ellipse cx="262" cy="308" rx="7" ry="9.5"/>
-                <ellipse cx="306" cy="276" rx="7" ry="9.5"/>
-                <ellipse cx="344" cy="330" rx="7" ry="9.5"/>
-                <ellipse cx="230" cy="352" rx="7" ry="9.5"/>
-                <ellipse cx="288" cy="356" rx="7" ry="9.5"/>
-                <ellipse cx="196" cy="360" rx="7" ry="9.5"/>
-              </g>
-            </g>
-            <!-- olives that fall when the tree is clicked -->
-            <g id="hero-drops" fill="#3D4829">
-              <ellipse cx="210" cy="330" rx="7" ry="9.5" opacity="0"/>
-              <ellipse cx="258" cy="300" rx="7" ry="9.5" opacity="0"/>
-              <ellipse cx="300" cy="336" rx="7" ry="9.5" opacity="0"/>
-            </g>
-            <ellipse cx="268" cy="566" rx="150" ry="16" fill="#5C6B45" opacity="0.35"/>
-          </g>
-
-          <!-- drifting leaves -->
-          <g id="hero-leaves" fill="#8FA076">
-            <path class="leaf-float" d="M700,180 q14,-4 22,6 q-12,8 -22,-6 z"/>
-            <path class="leaf-float" d="M950,260 q12,-4 19,5 q-10,7 -19,-5 z" opacity="0.7"/>
-            <path class="leaf-float" d="M540,120 q12,-4 19,5 q-10,7 -19,-5 z" opacity="0.6"/>
-          </g>
-        </svg>
-      </div>
-
       <div class="hero__foot">
-        <span class="hero__hint">גלילה — והמסיק מתחיל</span>
+        <span>גלילה</span>
         <span class="hero__rule" aria-hidden="true"></span>
         <span>מסיק תשפ"ו</span>
       </div>
     </section>
 
-    <!-- ================= JOURNEY (pinned scroll story) ================= -->
-    <section class="journey" id="journey">
-      <div class="journey__viewport">
+    <!-- ================= SHOWCASE — הבקבוקים ================= -->
+    <section class="showcase" id="oils">
+      <div class="showcase__bg" aria-hidden="true"></div>
+      <p class="showcase__watermark" aria-hidden="true">סורי</p>
 
-        <div class="journey__scenes" aria-hidden="true">
-          <!-- Scene 1: branch + harvest net -->
-          <svg class="scene scene--branch is-active" viewBox="0 0 620 620">
-            <g id="branch-sway">
-              <path d="M640,70 C500,96 400,128 316,186" stroke="#6B5843" stroke-width="13" stroke-linecap="round" fill="none"/>
-              <path d="M470,105 C440,140 428,168 426,196" stroke="#6B5843" stroke-width="8" stroke-linecap="round" fill="none"/>
-              <g fill="#7E9161">
-                <ellipse cx="560" cy="78" rx="34" ry="13" transform="rotate(-18 560 78)"/>
-                <ellipse cx="470" cy="100" rx="36" ry="14" transform="rotate(-26 470 100)"/>
-                <ellipse cx="392" cy="140" rx="34" ry="13" transform="rotate(-34 392 140)"/>
-                <ellipse cx="330" cy="180" rx="30" ry="12" transform="rotate(-40 330 180)"/>
-                <ellipse cx="430" cy="170" rx="28" ry="11" transform="rotate(-30 430 170)" fill="#8FA076"/>
-                <ellipse cx="505" cy="130" rx="27" ry="11" transform="rotate(-22 505 130)" fill="#8FA076"/>
-              </g>
-              <g id="branch-olives" fill="#46512F">
-                <ellipse cx="520" cy="112" rx="10" ry="14"/>
-                <ellipse cx="452" cy="140" rx="10" ry="14"/>
-                <ellipse cx="386" cy="176" rx="10" ry="14"/>
-                <ellipse cx="340" cy="210" rx="10" ry="14"/>
-                <ellipse cx="426" cy="205" rx="10" ry="14"/>
-                <ellipse cx="488" cy="165" rx="10" ry="14"/>
-              </g>
-            </g>
-            <!-- falling clones -->
-            <g id="fall-olives" fill="#46512F" opacity="0">
-              <ellipse cx="520" cy="112" rx="10" ry="14"/>
-              <ellipse cx="452" cy="140" rx="10" ry="14"/>
-              <ellipse cx="386" cy="176" rx="10" ry="14"/>
-              <ellipse cx="340" cy="210" rx="10" ry="14"/>
-              <ellipse cx="426" cy="205" rx="10" ry="14"/>
-              <ellipse cx="488" cy="165" rx="10" ry="14"/>
-            </g>
-            <!-- net -->
-            <g id="net">
-              <line x1="120" y1="430" x2="120" y2="520" stroke="#8A7A64" stroke-width="6" stroke-linecap="round"/>
-              <line x1="500" y1="430" x2="500" y2="520" stroke="#8A7A64" stroke-width="6" stroke-linecap="round"/>
-              <path id="net-cloth" d="M120,440 Q310,520 500,440" stroke="#C9B98F" stroke-width="7" fill="rgba(201,185,143,0.22)" stroke-linecap="round"/>
-              <g id="net-olives" fill="#46512F" opacity="0">
-                <ellipse cx="270" cy="470" rx="10" ry="13"/>
-                <ellipse cx="310" cy="478" rx="10" ry="13"/>
-                <ellipse cx="350" cy="470" rx="10" ry="13"/>
-                <ellipse cx="290" cy="484" rx="10" ry="13"/>
-                <ellipse cx="332" cy="486" rx="10" ry="13"/>
-                <ellipse cx="372" cy="479" rx="10" ry="13"/>
-              </g>
-            </g>
-          </svg>
-
-          <!-- Scene 2: the stone press -->
-          <svg class="scene scene--press" viewBox="0 0 620 620">
-            <ellipse cx="310" cy="470" rx="235" ry="52" fill="#8A7A64"/>
-            <ellipse cx="310" cy="456" rx="205" ry="42" fill="#6B5843"/>
-            <ellipse cx="310" cy="452" rx="185" ry="36" fill="#55603A"/>
-            <g fill="#46512F">
-              <ellipse cx="220" cy="448" rx="9" ry="12"/>
-              <ellipse cx="262" cy="456" rx="9" ry="12"/>
-              <ellipse cx="356" cy="452" rx="9" ry="12"/>
-              <ellipse cx="398" cy="446" rx="9" ry="12"/>
-              <ellipse cx="308" cy="460" rx="9" ry="12"/>
-            </g>
-            <line x1="310" y1="120" x2="310" y2="330" stroke="#6B5843" stroke-width="14" stroke-linecap="round"/>
-            <line x1="310" y1="150" x2="520" y2="196" stroke="#6B5843" stroke-width="12" stroke-linecap="round"/>
-            <g id="millstone">
-              <circle cx="310" cy="330" r="112" fill="#BCB19C"/>
-              <circle cx="310" cy="330" r="112" fill="none" stroke="#8A7A64" stroke-width="10"/>
-              <circle cx="310" cy="330" r="16" fill="#6B5843"/>
-              <line x1="310" y1="226" x2="310" y2="434" stroke="#8A7A64" stroke-width="8"/>
-              <line x1="206" y1="330" x2="414" y2="330" stroke="#8A7A64" stroke-width="8"/>
-              <line x1="237" y1="257" x2="383" y2="403" stroke="#8A7A64" stroke-width="6" opacity="0.7"/>
-              <line x1="383" y1="257" x2="237" y2="403" stroke="#8A7A64" stroke-width="6" opacity="0.7"/>
-            </g>
-          </svg>
-
-          <!-- Scene 3: oil pours into the bottle -->
-          <svg class="scene scene--oil" viewBox="0 0 620 620">
-            <defs>
-              <linearGradient id="oil-grad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#DDBB45"/>
-                <stop offset="1" stop-color="#C9A227"/>
-              </linearGradient>
-              <clipPath id="bottle-clip">
-                <path d="M282,268 L338,268 L338,300 C360,318 372,342 372,376 L372,520 C372,538 358,552 340,552 L280,552 C262,552 248,538 248,520 L248,376 C248,342 260,318 282,300 Z"/>
-              </clipPath>
-            </defs>
-            <!-- the press vat and its spout -->
-            <g id="press-vat">
-              <path d="M96,40 L232,40 L220,116 L108,116 Z" fill="#BCB19C" stroke="#8A7A64" stroke-width="6" stroke-linejoin="round"/>
-              <ellipse cx="164" cy="40" rx="68" ry="14" fill="#D6CDBB" stroke="#8A7A64" stroke-width="6"/>
-              <path d="M214,104 L262,104 C286,104 300,116 307,131" stroke="#8A7A64" stroke-width="14" fill="none" stroke-linecap="round"/>
-            </g>
-            <!-- the stream -->
-            <line id="oil-stream" x1="310" y1="136" x2="310" y2="300" stroke="#C9A227" stroke-width="11" stroke-linecap="round"/>
-            <circle id="oil-drop" cx="310" cy="150" r="7" fill="#C9A227" opacity="0"/>
-            <!-- bottle -->
-            <g clip-path="url(#bottle-clip)">
-              <rect x="240" y="268" width="140" height="290" fill="#F0EADA"/>
-              <rect id="oil-level" x="240" y="552" width="140" height="290" fill="url(#oil-grad)"/>
-            </g>
-            <path d="M282,268 L338,268 L338,300 C360,318 372,342 372,376 L372,520 C372,538 358,552 340,552 L280,552 C262,552 248,538 248,520 L248,376 C248,342 260,318 282,300 Z"
-                  fill="none" stroke="#3A4230" stroke-width="6"/>
-            <rect x="286" y="240" width="48" height="30" rx="6" fill="none" stroke="#3A4230" stroke-width="6"/>
-            <rect id="cork" x="284" y="228" width="52" height="14" rx="5" fill="#6B5843"/>
-            <rect x="256" y="330" width="16" height="150" rx="8" fill="#FFFFFF" opacity="0.35"/>
-            <g id="label" opacity="0">
-              <rect x="258" y="408" width="104" height="66" rx="4" fill="#F7F4ED" stroke="#3A4230" stroke-width="3"/>
-              <path d="M296 434 C300 424 310 422 316 423 C313 430 306 435 298 434.5" fill="#C9A227"/>
-              <ellipse cx="294" cy="446" rx="9" ry="11" transform="rotate(-14 294 446)" fill="#69794F"/>
-              <rect x="316" y="440" width="30" height="4" rx="2" fill="#3A4230" opacity="0.7"/>
-              <rect x="310" y="452" width="36" height="4" rx="2" fill="#3A4230" opacity="0.45"/>
-            </g>
-          </svg>
+      <!-- slide 1: סורי -->
+      <article class="slide is-active" data-slide="0" data-bg="#E7EBDC" data-watermark="סורי" data-product="סורי">
+        <div class="slide__floats" aria-hidden="true">
+          <img class="float float--a" src="assets/img/chip-branch.png" width="600" height="600" alt="" loading="lazy">
+          <img class="float float--b" src="assets/img/chip-olives.png" width="600" height="600" alt="" loading="lazy">
+          <span class="float float--p1 pill">עשב קצור</span>
+          <span class="float float--p2 pill">ארטישוק</span>
+          <span class="float float--p3 pill">פלפל ירוק</span>
+          <svg class="float float--leaf" viewBox="0 0 60 60"><path d="M8 52 C8 26 26 8 52 8 C52 34 34 52 8 52 Z" fill="#8A9B7C" opacity="0.8"/></svg>
         </div>
-
-        <div class="journey__captions">
-          <p class="label">המסע</p>
-          <div class="caption is-active" data-beat="0">
-            <h2>הפרי מבשיל<br>בלי שעון.</h2>
-            <p>על המדרון של כרם בן זמרה, הזיתים לוקחים את הזמן שלהם. אנחנו רק בודקים, טועמים, ומחכים לרגע שבו הזן מוכן — לא ליומן.</p>
-          </div>
-          <div class="caption" data-beat="1">
-            <h2>המסיק —<br>ביד, אל הרשת.</h2>
-            <p>מסרקות עץ, רשתות פרושות, ואצבעות של שלושה דורות. בלי מכונות רעד שפוצעות את הפרי — זית חבול מתחמצן עוד לפני המכבש.</p>
-          </div>
-          <div class="caption" data-beat="2">
-            <h2>אבן, סבלנות,<br>27 מעלות.</h2>
-            <p>הפרי של הבוקר נכבש באותו הלילה. טחינה איטית באבן, טמפרטורה שלא עולה על 27 מעלות, ואפס מגע עם חמצן.</p>
-          </div>
-          <div class="caption" data-beat="3">
-            <h2>זהב ירוק,<br>ישר מהמכבש.</h2>
-            <p>שלושה שבועות של שקיעה טבעית בנירוסטה חשוכה — ואז זכוכית. על כל בקבוק: תאריך המסיק והחלקה שממנה הגיע הפרי.</p>
-          </div>
-          <div class="journey__progress" aria-hidden="true">
-            <span class="dot is-active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
-          </div>
+        <div class="slide__bottle"><div class="bottle-inner" data-bottle="assets/img/bottle-1.png">
+          <svg class="bottle-ph" viewBox="0 0 260 640" aria-hidden="true">
+            <rect x="106" y="12" width="48" height="42" rx="8" fill="#20261B"/>
+            <rect x="102" y="52" width="56" height="34" rx="6" fill="#3D4830"/>
+            <path d="M112,84 L148,84 L148,196 C148,214 200,224 200,286 L200,584 C200,612 178,628 130,628 C82,628 60,612 60,584 L60,286 C60,224 112,214 112,196 Z" fill="#2A3323"/>
+            <path d="M118,90 L126,90 L126,198 C126,220 74,230 74,288 L74,580 C74,600 84,612 104,618 C80,614 66,600 66,584 L66,286 C66,226 118,216 118,196 Z" fill="#F7F4ED" opacity="0.13"/>
+            <rect x="176" y="300" width="12" height="250" rx="6" fill="#F7F4ED" opacity="0.1"/>
+            <rect x="76" y="356" width="108" height="132" rx="6" fill="#F3EFE3"/>
+            <path d="M118 384 C122 372 134 369 141 370 C137 379 128 385 120 384.5" fill="#C9A227"/>
+            <ellipse cx="116" cy="396" rx="9" ry="11" transform="rotate(-14 116 396)" fill="#69794F"/>
+            <text x="130" y="428" text-anchor="middle" font-family="Secular One" font-size="24" fill="#2E3627">כרם אדר</text>
+            <text x="130" y="452" text-anchor="middle" font-family="Assistant" font-weight="600" font-size="15" fill="#46512F">סורי · כתית מעולה</text>
+            <text x="130" y="472" text-anchor="middle" font-family="Assistant" font-size="11" fill="#8A7A64">מסיק תשפ"ו · הגליל העליון</text>
+          </svg>
+        </div></div>
+        <div class="slide__text">
+          <p class="slide__label">01 מתוך 03 · חלקת הסלעים</p>
+          <h2 class="slide__name">סורי</h2>
+          <p class="slide__desc">הזן השורשי של הגליל, נמסק בקטיף מוקדם. עשבוני ועמוק,
+          עם חריפות נקייה שנשארת בגרון — לסלטים, לחומוס, למנות בשריות.</p>
+          <p class="slide__meta"><span>500 מ"ל · חמיצות 0.24%</span><strong>₪ 86</strong></p>
+          <button class="btn btn--dark btn-press" type="button" data-open-drawer data-choose="סורי">להזמנה</button>
         </div>
+      </article>
 
+      <!-- slide 2: ברנע -->
+      <article class="slide" data-slide="1" data-bg="#F0E5CB" data-watermark="ברנע" data-product="ברנע">
+        <div class="slide__floats" aria-hidden="true">
+          <img class="float float--a" src="assets/img/chip-harvest.png" width="600" height="600" alt="" loading="lazy">
+          <img class="float float--b" src="assets/img/chip-grove.png" width="600" height="600" alt="" loading="lazy">
+          <span class="float float--p1 pill">עגבנייה ירוקה</span>
+          <span class="float float--p2 pill">אגוז טרי</span>
+          <span class="float float--p3 pill">סיומת מתוקה</span>
+          <svg class="float float--leaf" viewBox="0 0 60 60"><path d="M52 52 C52 26 34 8 8 8 C8 34 26 52 52 52 Z" fill="#C9A227" opacity="0.55"/></svg>
+        </div>
+        <div class="slide__bottle"><div class="bottle-inner" data-bottle="assets/img/bottle-2.png">
+          <svg class="bottle-ph" viewBox="0 0 260 640" aria-hidden="true">
+            <rect x="106" y="12" width="48" height="42" rx="8" fill="#20261B"/>
+            <rect x="102" y="52" width="56" height="34" rx="6" fill="#8A7A64"/>
+            <path d="M112,84 L148,84 L148,196 C148,214 200,224 200,286 L200,584 C200,612 178,628 130,628 C82,628 60,612 60,584 L60,286 C60,224 112,214 112,196 Z" fill="#2A3323"/>
+            <path d="M118,90 L126,90 L126,198 C126,220 74,230 74,288 L74,580 C74,600 84,612 104,618 C80,614 66,600 66,584 L66,286 C66,226 118,216 118,196 Z" fill="#F7F4ED" opacity="0.13"/>
+            <rect x="176" y="300" width="12" height="250" rx="6" fill="#F7F4ED" opacity="0.1"/>
+            <rect x="76" y="356" width="108" height="132" rx="6" fill="#F3EFE3"/>
+            <path d="M118 384 C122 372 134 369 141 370 C137 379 128 385 120 384.5" fill="#C9A227"/>
+            <ellipse cx="116" cy="396" rx="9" ry="11" transform="rotate(-14 116 396)" fill="#8A9B7C"/>
+            <text x="130" y="428" text-anchor="middle" font-family="Secular One" font-size="24" fill="#2E3627">כרם אדר</text>
+            <text x="130" y="452" text-anchor="middle" font-family="Assistant" font-weight="600" font-size="15" fill="#46512F">ברנע · כתית מעולה</text>
+            <text x="130" y="472" text-anchor="middle" font-family="Assistant" font-size="11" fill="#8A7A64">מסיק תשפ"ו · חלקת הוואדי</text>
+          </svg>
+        </div></div>
+        <div class="slide__text">
+          <p class="slide__label">02 מתוך 03 · חלקת הוואדי</p>
+          <h2 class="slide__name">ברנע</h2>
+          <p class="slide__desc">מעוגל ונעים, מהחלקה הפורייה של הוואדי. פירותיות מעודנת
+          וסיומת מתקתקה — השמן שמתחילים איתו את הבוקר.</p>
+          <p class="slide__meta"><span>500 מ"ל · חמיצות 0.28%</span><strong>₪ 78</strong></p>
+          <button class="btn btn--dark btn-press" type="button" data-open-drawer data-choose="ברנע">להזמנה</button>
+        </div>
+      </article>
+
+      <!-- slide 3: מסיק ירוק -->
+      <article class="slide slide--dark" data-slide="2" data-bg="#262E20" data-watermark="קורונייקי" data-product="מסיק ירוק">
+        <div class="slide__floats" aria-hidden="true">
+          <img class="float float--a" src="assets/img/chip-oil.png" width="600" height="600" alt="" loading="lazy">
+          <img class="float float--lemon" src="assets/img/lemon.png" width="520" height="448" alt="" loading="lazy">
+          <span class="float float--p1 pill pill--dark">קליפת לימון</span>
+          <span class="float float--p2 pill pill--dark">מרירות אצילית</span>
+          <span class="float float--p3 pill pill--gold">600 בקבוקים בשנה</span>
+          <svg class="float float--leaf" viewBox="0 0 60 60"><path d="M8 52 C8 26 26 8 52 8 C52 34 34 52 8 52 Z" fill="#C9A227" opacity="0.7"/></svg>
+        </div>
+        <div class="slide__bottle"><div class="bottle-inner" data-bottle="assets/img/bottle-3.png">
+          <svg class="bottle-ph" viewBox="0 0 260 640" aria-hidden="true">
+            <rect x="106" y="12" width="48" height="42" rx="8" fill="#C9A227"/>
+            <rect x="102" y="52" width="56" height="34" rx="6" fill="#20261B"/>
+            <path d="M112,84 L148,84 L148,196 C148,214 200,224 200,286 L200,584 C200,612 178,628 130,628 C82,628 60,612 60,584 L60,286 C60,224 112,214 112,196 Z" fill="#1E2418"/>
+            <path d="M118,90 L126,90 L126,198 C126,220 74,230 74,288 L74,580 C74,600 84,612 104,618 C80,614 66,600 66,584 L66,286 C66,226 118,216 118,196 Z" fill="#F7F4ED" opacity="0.12"/>
+            <rect x="176" y="300" width="12" height="250" rx="6" fill="#F7F4ED" opacity="0.09"/>
+            <rect x="76" y="356" width="108" height="132" rx="6" fill="#2E3627"/>
+            <path d="M118 384 C122 372 134 369 141 370 C137 379 128 385 120 384.5" fill="#C9A227"/>
+            <ellipse cx="116" cy="396" rx="9" ry="11" transform="rotate(-14 116 396)" fill="#C9A227"/>
+            <text x="130" y="428" text-anchor="middle" font-family="Secular One" font-size="24" fill="#F3EFE3">כרם אדר</text>
+            <text x="130" y="452" text-anchor="middle" font-family="Assistant" font-weight="600" font-size="15" fill="#DDBB45">מסיק ירוק · מהדורה מוגבלת</text>
+            <text x="130" y="472" text-anchor="middle" font-family="Assistant" font-size="11" fill="#8A9B7C">קורונייקי · נמסק ירוק כולו</text>
+          </svg>
+        </div></div>
+        <div class="slide__text">
+          <p class="slide__label">03 מתוך 03 · כרם הקורונייקי</p>
+          <h2 class="slide__name">מסיק ירוק</h2>
+          <p class="slide__desc">מהדורה מוגבלת: הזיתים נמסקים ירוקים לגמרי, שבועיים לפני כולם.
+          מריר, חריף, ירוק עמוק — כל בקבוק ממוספר ביד.</p>
+          <p class="slide__meta"><span>375 מ"ל · חמיצות 0.19%</span><strong>₪ 98</strong></p>
+          <button class="btn btn--gold btn-press" type="button" data-open-drawer data-choose="מסיק ירוק">להזמנה</button>
+        </div>
+      </article>
+
+      <div class="showcase__progress" aria-hidden="true">
+        <span class="dot is-active"></span><span class="dot"></span><span class="dot"></span>
       </div>
-    </section>
-
-    <!-- ================= SHELF ================= -->
-    <section class="shelf" id="shelf">
-      <header class="shelf__head st-rise">
-        <p class="label">השמנים</p>
-        <h2>שלושה שמנים,<br>שלוש חלקות.</h2>
-        <p class="shelf__note">כתית מעולה, כבישה קרה, מסיק תשפ"ו. משלוח צונן עד הבית בכל הארץ.</p>
-      </header>
-
-      <ul class="shelf__grid">
-        <li class="bottle-item st-rise" data-product="סורי">
-          <button class="bottle-item__visual" type="button" data-open-drawer data-choose="סורי" aria-label="הזמנת שמן סורי">
-            <svg viewBox="0 0 220 420" aria-hidden="true">
-              <defs><clipPath id="bc-1"><path d="M82,88 L138,88 L138,120 C160,138 172,164 172,198 L172,368 C172,388 156,404 136,404 L84,404 C64,404 48,388 48,368 L48,198 C48,164 60,138 82,120 Z"/></clipPath></defs>
-              <g clip-path="url(#bc-1)">
-                <rect x="40" y="80" width="140" height="330" fill="#F0EADA"/>
-                <rect x="40" y="152" width="140" height="260" fill="#DDBB45"/>
-                <rect x="40" y="152" width="140" height="10" fill="#E9CC66"/>
-              </g>
-              <path d="M82,88 L138,88 L138,120 C160,138 172,164 172,198 L172,368 C172,388 156,404 136,404 L84,404 C64,404 48,388 48,368 L48,198 C48,164 60,138 82,120 Z" fill="none" stroke="#3A4230" stroke-width="5"/>
-              <rect x="86" y="58" width="48" height="30" rx="6" fill="none" stroke="#3A4230" stroke-width="5"/>
-              <rect x="84" y="44" width="52" height="16" rx="5" fill="#6B5843"/>
-              <rect x="58" y="180" width="14" height="140" rx="7" fill="#fff" opacity="0.4" class="bottle-shine"/>
-              <rect x="66" y="238" width="88" height="58" rx="4" fill="#F7F4ED" stroke="#46512F" stroke-width="3"/>
-              <ellipse cx="96" cy="266" rx="8" ry="10" transform="rotate(-12 96 266)" fill="#46512F"/>
-              <rect x="112" y="258" width="30" height="4" rx="2" fill="#3A4230" opacity="0.75"/>
-              <rect x="108" y="270" width="38" height="4" rx="2" fill="#3A4230" opacity="0.45"/>
-              <ellipse class="bottle-shadow" cx="110" cy="412" rx="62" ry="7" fill="#3A4230" opacity="0.14"/>
-            </svg>
-          </button>
-          <h3>סורי</h3>
-          <p class="bottle-item__notes">עשב קצור · ארטישוק · חריפות נקייה</p>
-          <p class="bottle-item__origin">חלקת הסלעים · חמיצות 0.24%</p>
-          <p class="bottle-item__meta"><span>500 מ"ל</span><strong>₪ 86</strong></p>
-          <button class="btn btn--ghost btn--sm btn-press" type="button" data-open-drawer data-choose="סורי">להזמנה</button>
-        </li>
-
-        <li class="bottle-item st-rise" data-product="ברנע">
-          <button class="bottle-item__visual" type="button" data-open-drawer data-choose="ברנע" aria-label="הזמנת שמן ברנע">
-            <svg viewBox="0 0 220 420" aria-hidden="true">
-              <defs><clipPath id="bc-2"><path d="M82,88 L138,88 L138,120 C160,138 172,164 172,198 L172,368 C172,388 156,404 136,404 L84,404 C64,404 48,388 48,368 L48,198 C48,164 60,138 82,120 Z"/></clipPath></defs>
-              <g clip-path="url(#bc-2)">
-                <rect x="40" y="80" width="140" height="330" fill="#F0EADA"/>
-                <rect x="40" y="176" width="140" height="240" fill="#C9A227"/>
-                <rect x="40" y="176" width="140" height="10" fill="#DDBB45"/>
-              </g>
-              <path d="M82,88 L138,88 L138,120 C160,138 172,164 172,198 L172,368 C172,388 156,404 136,404 L84,404 C64,404 48,388 48,368 L48,198 C48,164 60,138 82,120 Z" fill="none" stroke="#3A4230" stroke-width="5"/>
-              <rect x="86" y="58" width="48" height="30" rx="6" fill="none" stroke="#3A4230" stroke-width="5"/>
-              <rect x="84" y="44" width="52" height="16" rx="5" fill="#6B5843"/>
-              <rect x="58" y="180" width="14" height="140" rx="7" fill="#fff" opacity="0.4" class="bottle-shine"/>
-              <rect x="66" y="238" width="88" height="58" rx="4" fill="#F7F4ED" stroke="#8A9B7C" stroke-width="3"/>
-              <ellipse cx="96" cy="266" rx="8" ry="10" transform="rotate(-12 96 266)" fill="#8A9B7C"/>
-              <rect x="112" y="258" width="30" height="4" rx="2" fill="#3A4230" opacity="0.75"/>
-              <rect x="108" y="270" width="38" height="4" rx="2" fill="#3A4230" opacity="0.45"/>
-              <ellipse class="bottle-shadow" cx="110" cy="412" rx="62" ry="7" fill="#3A4230" opacity="0.14"/>
-            </svg>
-          </button>
-          <h3>ברנע</h3>
-          <p class="bottle-item__notes">עגבנייה ירוקה · אגוז טרי · סיומת מתוקה</p>
-          <p class="bottle-item__origin">חלקת הוואדי · חמיצות 0.28%</p>
-          <p class="bottle-item__meta"><span>500 מ"ל</span><strong>₪ 78</strong></p>
-          <button class="btn btn--ghost btn--sm btn-press" type="button" data-open-drawer data-choose="ברנע">להזמנה</button>
-        </li>
-
-        <li class="bottle-item bottle-item--limited st-rise" data-product="מסיק ירוק">
-          <button class="bottle-item__visual" type="button" data-open-drawer data-choose="מסיק ירוק" aria-label="הזמנת שמן מסיק ירוק — מהדורה מוגבלת">
-            <svg viewBox="0 0 220 420" aria-hidden="true">
-              <defs><clipPath id="bc-3"><path d="M82,88 L138,88 L138,120 C160,138 172,164 172,198 L172,368 C172,388 156,404 136,404 L84,404 C64,404 48,388 48,368 L48,198 C48,164 60,138 82,120 Z"/></clipPath></defs>
-              <g clip-path="url(#bc-3)">
-                <rect x="40" y="80" width="140" height="330" fill="#F0EADA"/>
-                <rect x="40" y="200" width="140" height="220" fill="#A8A03C"/>
-                <rect x="40" y="200" width="140" height="10" fill="#C2B94E"/>
-              </g>
-              <path d="M82,88 L138,88 L138,120 C160,138 172,164 172,198 L172,368 C172,388 156,404 136,404 L84,404 C64,404 48,388 48,368 L48,198 C48,164 60,138 82,120 Z" fill="none" stroke="#3A4230" stroke-width="5"/>
-              <rect x="86" y="58" width="48" height="30" rx="6" fill="none" stroke="#3A4230" stroke-width="5"/>
-              <rect x="84" y="44" width="52" height="16" rx="5" fill="#46512F"/>
-              <rect x="58" y="180" width="14" height="140" rx="7" fill="#fff" opacity="0.4" class="bottle-shine"/>
-              <rect x="66" y="238" width="88" height="58" rx="4" fill="#2E3627"/>
-              <ellipse cx="96" cy="266" rx="8" ry="10" transform="rotate(-12 96 266)" fill="#C9A227"/>
-              <rect x="112" y="258" width="30" height="4" rx="2" fill="#F7F4ED" opacity="0.85"/>
-              <rect x="108" y="270" width="38" height="4" rx="2" fill="#F7F4ED" opacity="0.5"/>
-              <ellipse class="bottle-shadow" cx="110" cy="412" rx="62" ry="7" fill="#3A4230" opacity="0.14"/>
-            </svg>
-          </button>
-          <h3>מסיק ירוק <span class="tag">600 בקבוקים</span></h3>
-          <p class="bottle-item__notes">עשב עז · קליפת לימון · מרירות אצילית</p>
-          <p class="bottle-item__origin">כרם הקורונייקי · חמיצות 0.19%</p>
-          <p class="bottle-item__meta"><span>375 מ"ל</span><strong>₪ 98</strong></p>
-          <button class="btn btn--ghost btn--sm btn-press" type="button" data-open-drawer data-choose="מסיק ירוק">להזמנה</button>
-        </li>
-      </ul>
     </section>
 
     <!-- ================= STORY ================= -->
@@ -351,11 +179,26 @@
       <div class="story__inner">
         <p class="label st-rise">הסיפור</p>
         <h2 class="story__statement" data-words>סבא שלמה נטע את השורה הראשונה בחורף 1963. הוא לא קרא לזה כתית מעולה — הוא קרא לזה שמן.</h2>
-        <div class="story__cols st-rise">
-          <p>שלושה דורות אחריו אנחנו עושים בדיוק את אותו הדבר, רק בסבלנות ארוכה יותר.
-          לא מערבבים זנים, לא קונים פרי מבחוץ, לא ממהרים לשום מקום.</p>
-          <p>העצים היו כאן לפנינו — רובם יישארו כאן אחרינו. אנחנו רק שומרים עליהם,
-          ופעם בשנה, בין אוקטובר לחנוכה, הם משלמים לנו בזהב ירוק.</p>
+        <div class="story__grid">
+          <figure class="story__photo story__photo--tall st-rise">
+            <img src="assets/img/harvest.jpg" width="1600" height="2210" loading="lazy"
+                 alt="מוסק מרעיד ענפים במסרק ארוך מעל רשתות פרושות בין עצי הזית">
+            <figcaption>המסיק · מסרקות יד ורשתות, בלי מכונות רעד</figcaption>
+          </figure>
+          <div class="story__side">
+            <div class="story__detail st-rise">
+              <p>שלושה דורות אחרי השורה הראשונה, אנחנו עושים בדיוק את אותו הדבר —
+              רק בסבלנות ארוכה יותר. קטיף ידני בלבד, כבישה קרה בתוך שש שעות מהעץ,
+              ואפס פשרות על חמיצות.</p>
+              <p>לא מערבבים זנים, לא קונים פרי מבחוץ, לא ממהרים לשום מקום.
+              העצים היו כאן לפנינו — רובם יישארו כאן אחרינו.</p>
+            </div>
+            <figure class="story__photo st-rise">
+              <img src="assets/img/oil-pour.jpg" width="689" height="1024" loading="lazy"
+                   alt="שמן זית ירוק-זהוב נמזג ממכבש נירוסטה בבית הבד">
+              <figcaption>הכבישה · 27 מעלות, אפס חמצן</figcaption>
+            </figure>
+          </div>
         </div>
         <ul class="story__facts st-rise">
           <li><strong>1963</strong><span>השורה הראשונה</span></li>
@@ -369,7 +212,7 @@
     <!-- ================= VISIT ================= -->
     <section class="visit" id="visit">
       <svg class="visit__hills" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0,120 C240,40 480,84 720,62 C960,40 1200,86 1440,52 L1440,120 Z" fill="#2E3627"/>
+        <path d="M0,120 C240,40 480,84 720,62 C960,40 1200,86 1440,52 L1440,120 Z" fill="#262E20"/>
       </svg>
       <div class="visit__inner">
         <div class="visit__text st-rise">
@@ -403,7 +246,7 @@
     </svg>
     <p class="footer__brand">כרם אדר</p>
     <p>בית בד משפחתי · מושב כרם בן זמרה, הגליל העליון · <a href="tel:+97246982417">04-698-2417</a> · <a href="mailto:shalom@keremadar.co.il">shalom@keremadar.co.il</a></p>
-    <p class="footer__small">© תשפ"ו 2026 · האיורים צוירו עבורנו, בבית</p>
+    <p class="footer__small">© תשפ"ו 2026 · צילומים: Wikimedia Commons ו-Flickr, רישיונות CC BY / CC BY-SA / CC0</p>
   </footer>
 
   <!-- ================= ORDER DRAWER ================= -->
