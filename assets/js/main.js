@@ -137,7 +137,7 @@ if (motionOn) {
   // phones get a much shorter pin distance — a thumb-flick covers far fewer
   // pixels than a mouse wheel, so the same 2800px feels endless on touch
   const isTouch = window.matchMedia('(pointer: coarse)').matches;
-  const pinDistance = isTouch ? 1500 : 2800;
+  const pinDistance = isTouch ? 2200 : 2800;
 
   const st = gsap.timeline({
     defaults: { ease: 'power2.inOut' },
