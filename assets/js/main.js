@@ -57,7 +57,7 @@ if (motionOn) {
 
   /* --- hero entrance + slow drift out --- */
   gsap.timeline({ defaults: { ease: 'power3.out' } })
-    .fromTo('.hero__media img', { scale: 1.08 }, { scale: 1, duration: 2.2, ease: 'power2.out' }, 0)
+    .fromTo('.hero__media img', { scale: 1.12 }, { scale: 1.05, duration: 2.2, ease: 'power2.out' }, 0)
     .to('.hero__kicker .line__inner', { y: 0, duration: 0.8 }, 0.25)
     .to('.hero__title .line__inner', { y: 0, duration: 0.95, stagger: 0.12 }, 0.4)
     .to('.hero__lede .line__inner', { y: 0, duration: 0.85, stagger: 0.1 }, 0.75)
@@ -224,6 +224,133 @@ if (motionOn) {
   });
   // hold the last slide before the pin releases
   st.to({}, { duration: 0.4 }, N - 0.4);
+
+  /* ============ SITE-WIDE MICRO-INTERACTIONS ============ */
+  const finePointer = window.matchMedia('(pointer: fine)').matches;
+
+  // thin gold progress line — how deep into the page you are
+  const progressBar = document.createElement('div');
+  progressBar.className = 'scroll-progress';
+  progressBar.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(progressBar);
+  gsap.to(progressBar, {
+    scaleX: 1, ease: 'none',
+    scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 0.3 }
+  });
+
+  // nav slips away on the way down, returns on the way up
+  let lastScrollY = window.scrollY;
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y > 420 && y > lastScrollY + 6) nav.classList.add('nav--hidden');
+    else if (y < lastScrollY - 6 || y <= 420) nav.classList.remove('nav--hidden');
+    lastScrollY = y;
+  }, { passive: true });
+
+  // scrollspy: the section you're in keeps its nav link underlined
+  ['oils', 'pairings', 'story', 'visit'].forEach(id => {
+    const link = document.querySelector(`.nav__links a[href="#${id}"]`);
+    if (!link || !document.getElementById(id)) return;
+    ScrollTrigger.create({
+      trigger: '#' + id,
+      start: 'top 55%',
+      end: 'bottom 55%',
+      onToggle: self => link.classList.toggle('is-current', self.isActive)
+    });
+  });
+
+  // buttons: click ripple + press scale + magnetic pull toward the cursor
+  document.querySelectorAll('.btn, .nav__order').forEach(btn => {
+    btn.classList.add('has-ripple');
+
+    btn.addEventListener('pointerdown', (e) => {
+      const r = btn.getBoundingClientRect();
+      const ripple = document.createElement('span');
+      ripple.className = 'ripple';
+      const d = Math.max(r.width, r.height) * 2.2;
+      ripple.style.width = ripple.style.height = d + 'px';
+      ripple.style.left = (e.clientX - r.left) + 'px';
+      ripple.style.top = (e.clientY - r.top) + 'px';
+      btn.appendChild(ripple);
+      gsap.to(ripple, { scale: 1, opacity: 0, duration: 0.65, ease: 'power2.out', onComplete: () => ripple.remove() });
+      gsap.to(btn, { scale: 0.95, duration: 0.12, ease: 'power2.out' });
+    });
+    const release = () => gsap.to(btn, { scale: 1, duration: 0.3, ease: 'back.out(2.5)' });
+    btn.addEventListener('pointerup', release);
+    btn.addEventListener('pointerleave', release);
+
+    if (finePointer) {
+      btn.addEventListener('mousemove', (e) => {
+        const r = btn.getBoundingClientRect();
+        gsap.to(btn, {
+          x: (e.clientX - r.left - r.width / 2) * 0.22,
+          y: (e.clientY - r.top - r.height / 2) * 0.3,
+          duration: 0.4, ease: 'power2.out'
+        });
+      });
+      btn.addEventListener('mouseleave', () => {
+        gsap.to(btn, { x: 0, y: 0, duration: 0.55, ease: 'elastic.out(1, 0.5)' });
+      });
+    }
+  });
+
+  // the facts count up from zero when they enter the view
+  document.querySelectorAll('.story__facts strong').forEach(el => {
+    const m = el.textContent.trim().match(/^([\d.,]+)(.*)$/);
+    if (!m) return;
+    const hasComma = m[1].includes(',');
+    const target = parseFloat(m[1].replace(/,/g, ''));
+    const decimals = (m[1].split('.')[1] || '').length;
+    const suffix = m[2];
+    const counter = { v: 0 };
+    ScrollTrigger.create({
+      trigger: el, start: 'top 88%', once: true,
+      onEnter: () => gsap.to(counter, {
+        v: target, duration: 1.8, ease: 'power2.out',
+        onUpdate: () => {
+          let s = counter.v.toFixed(decimals);
+          if (hasComma) s = Number(s).toLocaleString('en-US', { minimumFractionDigits: decimals });
+          el.textContent = s + suffix;
+        }
+      })
+    });
+  });
+
+  // pairing cards rise in one after the other
+  gsap.utils.toArray('.pairings__card').forEach((card, i) => {
+    gsap.from(card, {
+      y: 64, opacity: 0, duration: 0.9, delay: (i % 3) * 0.13, ease: 'power3.out',
+      scrollTrigger: { trigger: card.closest('.pairings__grid'), start: 'top 82%' }
+    });
+  });
+
+  // visit card tilts in 3D under the cursor
+  const visitCard = document.querySelector('.visit__card');
+  if (visitCard && finePointer) {
+    gsap.set(visitCard, { transformPerspective: 800 });
+    visitCard.addEventListener('mousemove', (e) => {
+      const r = visitCard.getBoundingClientRect();
+      const nx = (e.clientX - r.left) / r.width - 0.5;
+      const ny = (e.clientY - r.top) / r.height - 0.5;
+      gsap.to(visitCard, { rotationY: nx * 7, rotationX: -ny * 6, duration: 0.5, ease: 'power2.out' });
+    });
+    visitCard.addEventListener('mouseleave', () => {
+      gsap.to(visitCard, { rotationY: 0, rotationX: 0, duration: 0.7, ease: 'elastic.out(1, 0.55)' });
+    });
+  }
+
+  // hero photo leans gently away from the cursor
+  const heroImg = document.querySelector('.hero__media img');
+  if (heroImg && finePointer) {
+    // (the intro tween already settles the image at scale 1.05 — overscan
+    // headroom so this drift never exposes the photo's edges)
+    const hx = gsap.quickTo(heroImg, 'x', { duration: 0.8, ease: 'power2.out' });
+    const hy = gsap.quickTo(heroImg, 'y', { duration: 0.8, ease: 'power2.out' });
+    document.querySelector('.hero').addEventListener('mousemove', (e) => {
+      hx((e.clientX / window.innerWidth - 0.5) * -18);
+      hy((e.clientY / window.innerHeight - 0.5) * -10);
+    });
+  }
 
   /* ============ STORY & GENERAL GENERAL RISE ============ */
   gsap.utils.toArray('.st-rise').forEach(el => {

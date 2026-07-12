@@ -142,7 +142,7 @@ h1, h2, h3 {
   color: var(--cream-on-dark); /* Restored default light cream text for dark background contrast */
   border-bottom: 1px solid transparent;
   transition: color 0.4s var(--ease-hover), background-color 0.4s var(--ease-hover),
-              border-color 0.4s var(--ease-hover);
+              border-color 0.4s var(--ease-hover), transform 0.45s var(--ease-hover);
 }
 .nav.is-solid {
   background: var(--cream);
@@ -954,6 +954,50 @@ html.js.motion .story__photo img { transform: scale(1.08); }
 .drawer__submit:hover { background: var(--ink); }
 
 .drawer__hint { margin-top: 0.85rem; font-size: 0.82rem; color: var(--ink-soft); }
+
+/* ============ MICRO-INTERACTIONS ============ */
+
+/* thin gold scroll-progress line along the top */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  inset-inline: 0;
+  height: 3px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: right;
+  z-index: 200;
+  pointer-events: none;
+}
+
+/* nav hides when scrolling down, returns on the way up */
+.nav { will-change: transform; }
+.nav--hidden { transform: translateY(-105%); }
+
+/* scrollspy: the link of the section in view keeps its gold underline */
+.nav__links a.is-current { opacity: 1; }
+.nav__links a.is-current::after { transform: scaleX(1); }
+
+/* click ripple */
+.has-ripple { position: relative; overflow: hidden; }
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.25;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0);
+}
+
+/* story photos: color response on hover (no transform — GSAP owns it) */
+.story__photo img { transition: filter 0.5s var(--ease-hover); }
+.story__photo:hover img { filter: saturate(1.18) brightness(1.05); }
+.story__photo figcaption { transition: color 0.3s var(--ease-hover); }
+.story__photo:hover figcaption { color: var(--olive); }
+
+/* visit card gets 3D room for the tilt */
+.visit__card { transform-style: preserve-3d; }
+.visit__card dl, .visit__card .btn { transform: translateZ(24px); }
 
 /* ============ MOTION PRE-STATES ============ */
 
