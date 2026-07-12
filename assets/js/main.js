@@ -81,16 +81,33 @@ if (motionOn) {
   const dots = gsap.utils.toArray('.showcase__progress .dot');
   const N = slides.length;
 
-  // idle drift: floats breathe forever (yPercent — never clashes with the
-  // scroll timeline, which owns x/y/scale/opacity)
+  // idle drift: every float breathes, sways and slowly rotates forever.
+  // uses yPercent/xPercent/rotation — the scroll timeline owns x/y/scale/opacity,
+  // so the two never fight over the same property.
   document.querySelectorAll('.float').forEach((el, i) => {
     gsap.to(el, {
-      yPercent: gsap.utils.random(-7, -12),
-      duration: gsap.utils.random(2.6, 4.2),
+      yPercent: gsap.utils.random(-10, -17),
+      duration: gsap.utils.random(2.2, 3.6),
       ease: 'sine.inOut',
       yoyo: true,
       repeat: -1,
-      delay: i * 0.3
+      delay: i * 0.25
+    });
+    gsap.to(el, {
+      xPercent: gsap.utils.random(-7, 7),
+      duration: gsap.utils.random(3.4, 5.6),
+      ease: 'sine.inOut',
+      yoyo: true,
+      repeat: -1,
+      delay: gsap.utils.random(0, 1.5)
+    });
+    gsap.to(el, {
+      rotation: gsap.utils.random(-7, 7),
+      duration: gsap.utils.random(3, 5),
+      ease: 'sine.inOut',
+      yoyo: true,
+      repeat: -1,
+      delay: gsap.utils.random(0, 2)
     });
   });
   document.querySelectorAll('.bottle-inner').forEach((el, i) => {
@@ -187,13 +204,29 @@ if (motionOn) {
   // hold the last slide before the pin releases
   st.to({}, { duration: 0.4 }, N - 0.4);
 
-  /* ============ STORY ============ */
+  /* ============ STORY & GENERAL GENERAL RISE ============ */
   gsap.utils.toArray('.st-rise').forEach(el => {
     gsap.to(el, {
       opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
       scrollTrigger: { trigger: el, start: 'top 86%' }
     });
   });
+
+  /* ============ PAIRINGS ============ */
+  gsap.fromTo('.pairings__card',
+    { opacity: 0, y: 50 },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 1.1,
+      stagger: 0.16,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: '.pairings__grid',
+        start: 'top 86%'
+      }
+    }
+  );
 
   const statement = document.querySelector('[data-words]');
   if (statement) {
