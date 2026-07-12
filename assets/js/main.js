@@ -134,17 +134,37 @@ if (motionOn) {
     showcase.classList.toggle('is-dark', slides[i].classList.contains('slide--dark'));
   };
 
+  // phones get a much shorter pin distance — a thumb-flick covers far fewer
+  // pixels than a mouse wheel, so the same 2800px feels endless on touch
+  const isTouch = window.matchMedia('(pointer: coarse)').matches;
+  const pinDistance = isTouch ? 1500 : 2800;
+
   const st = gsap.timeline({
     defaults: { ease: 'power2.inOut' },
     scrollTrigger: {
       trigger: '.showcase',
       start: 'top top',
-      end: '+=2800',
+      end: `+=${pinDistance}`,
       pin: true,
-      scrub: 0.4,
+      scrub: isTouch ? 0.7 : 0.4,
+      invalidateOnRefresh: true,
+      // stop mid-transition? snap carries the animation to the nearest
+      // settled slide instead of freezing halfway
+      snap: {
+        snapTo: 'labelsDirectional',
+        duration: { min: 0.3, max: 0.9 },
+        delay: 0.05,
+        ease: 'power2.out'
+      },
       onUpdate: (self) => setDots(Math.min(N - 1, Math.floor(self.progress * N)))
     }
   });
+
+  // settled resting points for the snap — one per slide, plus the release
+  st.addLabel('rest0', 0.2);
+  st.addLabel('rest1', 1.2);
+  st.addLabel('rest2', 2.2);
+  st.addLabel('release', 3);
 
   // each float exits outward, away from the stage center
   const outVec = (el, dist) => {

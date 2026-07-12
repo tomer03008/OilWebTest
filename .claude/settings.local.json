@@ -56,7 +56,9 @@
       "Bash(awk -F: '$1 > 640')",
       "PowerShell($edge = \"C:\\\\Program Files \\(x86\\)\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\"; if \\(-not \\(Test-Path $edge\\)\\) { $edge = \"C:\\\\Program Files\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\" }; & $edge --headless=new --disable-gpu --hide-scrollbars --window-size=1440,860 --virtual-time-budget=9000 --screenshot=\"C:\\\\Users\\\\ADMIN\\\\Desktop\\\\ex\\\\.shots\\\\z-slide2.png\" \"http://localhost:8642/?static&only=2\" 2>$null; Start-Sleep 3; Get-ChildItem C:\\\\Users\\\\ADMIN\\\\Desktop\\\\ex\\\\.shots\\\\z-slide2.png -ErrorAction SilentlyContinue | Select-Object Length)",
       "Bash(rm -f assets/img/A_single*.jpeg assets/img/Bright_green*.jpeg assets/img/Cut_grass*.jpeg assets/img/Green_chili*.jpeg assets/img/Halved*.jpeg assets/img/Olive_branch*.jpeg assets/img/Olive_leaves*.jpeg assets/img/Olives_with*.jpeg assets/img/Two_cracked*.jpeg assets/img/Two_lemon*.jpeg assets/img/*-key.jpeg)",
-      "Bash(git commit -q -m 'feat: ZestySip-style product stage — centered bottle, giant name, circle reveal *)"
+      "Bash(git commit -q -m 'feat: ZestySip-style product stage — centered bottle, giant name, circle reveal *)",
+      "PowerShell($edge = \"C:\\\\Program Files \\(x86\\)\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\"; if \\(-not \\(Test-Path $edge\\)\\) { $edge = \"C:\\\\Program Files\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\" }; & $edge --headless=new --disable-gpu --hide-scrollbars --window-size=1440,860 --virtual-time-budget=9000 --screenshot=\"C:\\\\Users\\\\ADMIN\\\\Desktop\\\\ex\\\\.shots\\\\price-check.png\" \"http://localhost:8642/?static&only=0\"; Start-Sleep 4; Get-ChildItem C:\\\\Users\\\\ADMIN\\\\Desktop\\\\ex\\\\.shots\\\\price-check.png -ErrorAction SilentlyContinue | Select-Object Length)",
+      "Bash(git commit -q -m 'fix: shekel rendering, mobile fullscreen stage, touch scroll feel *)"
     ]
   }
 }
