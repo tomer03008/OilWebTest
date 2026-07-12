@@ -57,20 +57,26 @@ if (motionOn) {
 
   /* --- hero entrance + slow drift out --- */
   gsap.timeline({ defaults: { ease: 'power3.out' } })
-    .fromTo('.hero__media img', { scale: 1.08 }, { scale: 1, duration: 2.4, ease: 'power2.out' }, 0)
-    .to('.hero__kicker .line__inner', { y: 0, duration: 0.8 }, 0.2)
-    .to('.hero__title .line__inner', { y: 0, duration: 1, stagger: 0.13 }, 0.35)
-    .to('.hero__lede .line__inner', { y: 0, duration: 0.85 }, 0.75)
-    .to('.hero__ctas', { opacity: 1, duration: 0.7 }, 1.0)
-    .to('.hero__rule', { scaleX: 1, duration: 1, ease: 'power2.inOut' }, 1.05);
+    .fromTo('.hero__frame-main img', { scale: 1.15 }, { scale: 1, duration: 2.2, ease: 'power2.out' }, 0)
+    .to('.hero__title-display .line-mask-inner', { y: 0, duration: 1.1, stagger: 0.14 }, 0.15)
+    .to('.hero__description .line-mask-inner', { y: 0, duration: 0.9, stagger: 0.1 }, 0.45)
+    .fromTo('.hero__kicker-label', { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.8 }, 0.1)
+    .fromTo('.cta-annotation', { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.8, stagger: 0.12 }, 0.75)
+    .to('.hero__rule', { scaleX: 1, duration: 1.2, ease: 'power2.inOut' }, 0.9)
+    .fromTo('.hero__frame-inset', { opacity: 0, y: 50, scale: 0.95 }, { opacity: 1, y: 0, scale: 1, duration: 1.4, ease: 'power3.out' }, 0.5);
 
-  gsap.to('.hero__media', {
-    yPercent: 14, ease: 'none',
+  // Parallax layers on scroll trigger (depth planes)
+  gsap.to('.hero__frame-main', {
+    yPercent: 8, ease: 'none',
     scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
   });
-  gsap.to('.hero__content', {
-    yPercent: -10, opacity: 0.3, ease: 'none',
-    scrollTrigger: { trigger: '.hero', start: '55% 40%', end: 'bottom top', scrub: true }
+  gsap.to('.hero__frame-inset', {
+    yPercent: -14, ease: 'none',
+    scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
+  });
+  gsap.to('.hero__block-text', {
+    yPercent: -5, opacity: 0.35, ease: 'none',
+    scrollTrigger: { trigger: '.hero', start: '40% 30%', end: 'bottom top', scrub: true }
   });
 
   /* ============ THE SHOWCASE — ZestySip-style stage ============ */
