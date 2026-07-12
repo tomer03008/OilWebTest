@@ -255,38 +255,85 @@ h1, h2, h3 {
 }
 
 .hero__kicker {
-  font-size: clamp(0.82rem, 1vw, 0.95rem);
-  font-weight: 700;
+  font-family: 'Assistant', sans-serif;
+  font-size: clamp(0.85rem, 1.1vw, 1.05rem);
+  font-weight: 600;
   color: var(--gold-soft);
-  letter-spacing: 0.08em;
-  margin-bottom: 1.2rem;
+  letter-spacing: 0.12em;
+  margin-bottom: 1.4rem;
   text-transform: uppercase;
 }
 
 .hero__title {
-  font-family: var(--font-display);
-  font-size: clamp(2.8rem, 6.5vw, 5.2rem);
-  line-height: 1.05;
+  font-family: 'Frank Ruhl Libre', serif;
+  font-size: clamp(2.8rem, 6vw, 4.8rem);
+  font-weight: 700;
+  line-height: 1.1;
   color: var(--cream);
   margin-bottom: 1.6rem;
   text-shadow: 0 4px 24px rgba(20, 25, 16, 0.45);
 }
 
 .hero__lede {
-  font-size: clamp(1rem, 1.35vw, 1.25rem);
-  line-height: 1.6;
+  font-family: 'Assistant', sans-serif;
+  font-size: clamp(1rem, 1.3vw, 1.2rem);
+  line-height: 1.65;
   font-weight: 300;
   color: var(--cream-on-dark-dim);
-  margin-bottom: 2.5rem;
+  margin-bottom: 2.8rem;
   max-width: 44rem;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
 }
 
 .hero__ctas {
   display: flex;
-  gap: 1rem;
+  gap: 1.2rem;
   justify-content: center;
   flex-wrap: wrap;
+}
+
+/* Sharp Architectural square buttons */
+.btn--square-primary,
+.btn--square-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem 2.4rem;
+  font-family: 'Assistant', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  border-radius: 0 !important; /* STRICT square corners */
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.btn--square-primary {
+  background: var(--cream);
+  color: var(--ink);
+  border: 1px solid var(--cream);
+}
+
+.btn--square-primary:hover {
+  background: transparent;
+  color: var(--cream);
+  border-color: var(--cream);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(247, 244, 237, 0.12);
+}
+
+.btn--square-secondary {
+  background: transparent;
+  color: var(--cream);
+  border: 1px solid rgba(247, 244, 237, 0.35);
+}
+
+.btn--square-secondary:hover {
+  background: var(--cream);
+  color: var(--ink);
+  border-color: var(--cream);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(247, 244, 237, 0.12);
 }
 
 .hero__foot {
