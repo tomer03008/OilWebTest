@@ -12,6 +12,15 @@ const motionOn = !reduceMotion && hasGsap && !forceStatic;
 document.documentElement.classList.add(motionOn ? 'motion' : 'no-motion');
 if (forceStatic) document.documentElement.classList.add('static');
 
+// test-only: ?static&only=N isolates one showcase slide for screenshots
+const onlySlide = new URLSearchParams(location.search).get('only');
+if (forceStatic && onlySlide !== null) {
+  document.querySelectorAll('.hero, .story, .visit, .footer, footer').forEach(el => el.style.display = 'none');
+  document.querySelectorAll('.slide').forEach(s => {
+    if (s.dataset.slide !== onlySlide) s.style.display = 'none';
+  });
+}
+
 /* ============ NAV ============ */
 const nav = document.querySelector('.nav');
 const hero = document.querySelector('.hero');
@@ -41,25 +50,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   });
 });
 
-/* ============ BOTTLE SLOTS ============ */
-// drop transparent PNGs at assets/img/bottle-1.png / bottle-2.png / bottle-3.png
-// and each slide upgrades from the placeholder automatically.
-document.querySelectorAll('.bottle-inner[data-bottle]').forEach(async holder => {
-  const src = holder.dataset.bottle;
-  try {
-    const head = await fetch(src, { method: 'HEAD' });
-    if (!head.ok) return;
-  } catch { return; }
-  const img = new Image();
-  img.src = src;
-  img.alt = '';
-  img.decoding = 'async';
-  img.addEventListener('load', () => {
-    holder.querySelector('.bottle-ph')?.remove();
-    holder.appendChild(img);
-  }, { once: true });
-});
-
 /* ============ MOTION ============ */
 if (motionOn) {
   gsap.registerPlugin(ScrollTrigger);
@@ -83,31 +73,40 @@ if (motionOn) {
     scrollTrigger: { trigger: '.hero', start: '55% 40%', end: 'bottom top', scrub: true }
   });
 
-  /* ============ THE SHOWCASE ============ */
+  /* ============ THE SHOWCASE — ZestySip-style stage ============ */
   const showcase = document.querySelector('.showcase');
   const bgEl = document.querySelector('.showcase__bg');
-  const watermark = document.querySelector('.showcase__watermark');
+  const revealEl = document.querySelector('.showcase__reveal');
   const slides = gsap.utils.toArray('.slide');
   const dots = gsap.utils.toArray('.showcase__progress .dot');
   const N = slides.length;
 
-  // idle drift: every floating element breathes forever, out of phase
+  // idle drift: floats breathe forever (yPercent — never clashes with the
+  // scroll timeline, which owns x/y/scale/opacity)
   document.querySelectorAll('.float').forEach((el, i) => {
     gsap.to(el, {
-      y: gsap.utils.random(-16, -30),
-      rotation: gsap.utils.random(-5, 5),
+      yPercent: gsap.utils.random(-7, -12),
       duration: gsap.utils.random(2.6, 4.2),
       ease: 'sine.inOut',
       yoyo: true,
       repeat: -1,
-      delay: i * 0.35
+      delay: i * 0.3
     });
   });
-  // idle float lives on the INNER element — the scroll timeline owns the outer,
-  // so the two never write to the same transform property.
   document.querySelectorAll('.bottle-inner').forEach((el, i) => {
     gsap.to(el, { y: -14, rotation: 1.2, duration: 3.6, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: i * 0.4 });
   });
+
+  // mouse parallax: bottle and giant title drift on opposite depths
+  if (window.matchMedia('(pointer: fine)').matches) {
+    const qBottle = slides.map(s => gsap.quickTo(s.querySelector('.bottle-inner'), 'xPercent', { duration: 0.7, ease: 'power2.out' }));
+    const qGiant = slides.map(s => gsap.quickTo(s.querySelector('.slide__giant'), 'xPercent', { duration: 0.9, ease: 'power2.out' }));
+    showcase.addEventListener('mousemove', (e) => {
+      const nx = (e.clientX / window.innerWidth - 0.5) * 2; // -1..1
+      qBottle.forEach(fn => fn(nx * -3.5));
+      qGiant.forEach(fn => fn(nx * 2));
+    });
+  }
 
   let current = 0;
   const setDots = (i) => {
@@ -122,49 +121,71 @@ if (motionOn) {
     scrollTrigger: {
       trigger: '.showcase',
       start: 'top top',
-      end: '+=2600',
+      end: '+=2800',
       pin: true,
-      scrub: true,
+      scrub: 0.4,
       onUpdate: (self) => setDots(Math.min(N - 1, Math.floor(self.progress * N)))
     }
   });
 
+  // each float exits outward, away from the stage center
+  const outVec = (el, dist) => {
+    const r = el.getBoundingClientRect();
+    const cx = r.left + r.width / 2 - window.innerWidth / 2;
+    const cy = r.top + r.height / 2 - window.innerHeight / 2;
+    const len = Math.hypot(cx, cy) || 1;
+    return { x: (cx / len) * dist, y: (cy / len) * dist };
+  };
+
   slides.forEach((slide, i) => {
-    const parts = {
-      bottle: slide.querySelector('.slide__bottle'),
-      floats: slide.querySelectorAll('.float'),
-      text: slide.querySelectorAll('.slide__text > *')
-    };
+    const bottle = slide.querySelector('.slide__bottle');
+    const giant = slide.querySelector('.slide__giant');
+    const floats = gsap.utils.toArray(slide.querySelectorAll('.float'));
+    const info = slide.querySelectorAll('.slide__info > *');
 
     if (i > 0) {
-      // arrive: background morphs, bottle rises in with a tilt, floats pop, text staggers
-      st.set(slide, { visibility: 'visible' }, i - 0.42);
-      st.to(bgEl, { backgroundColor: slide.dataset.bg, duration: 0.5 }, i - 0.45);
-      st.fromTo(watermark, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.3,
-        onStart: () => { watermark.textContent = slide.dataset.watermark; },
-        onReverseComplete: () => { watermark.textContent = slides[i - 1].dataset.watermark; }
-      }, i - 0.18);
-      st.to(slide, { opacity: 1, duration: 0.28 }, i - 0.3);
-      st.fromTo(parts.bottle, { y: 190, rotation: 9, opacity: 0 },
-        { y: 0, rotation: 0, opacity: 1, duration: 0.42, ease: 'power3.out' }, i - 0.3);
-      st.fromTo(parts.floats, { scale: 0.4, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.3, stagger: 0.045, ease: 'back.out(1.8)' }, i - 0.22);
-      st.fromTo(parts.text, { y: 34, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.3, stagger: 0.04, ease: 'power3.out' }, i - 0.24);
+      /* arrive: circle of the new color expands from behind the bottle,
+         the bottle drops in with a bounce, ingredients pop outward-in,
+         the giant name rises from below */
+      const t0 = i - 0.46;
+      st.set(revealEl, { backgroundColor: slide.dataset.bg }, t0);
+      st.fromTo(revealEl, { clipPath: 'circle(0% at 50% 56%)' },
+        { clipPath: 'circle(145% at 50% 56%)', duration: 0.34, ease: 'power2.in', immediateRender: false }, t0);
+      st.set(bgEl, { backgroundColor: slide.dataset.bg }, t0 + 0.35);
+      st.set(revealEl, { clipPath: 'circle(0% at 50% 56%)' }, t0 + 0.36);
+
+      st.set(slide, { visibility: 'visible' }, t0 + 0.08);
+      st.to(slide, { opacity: 1, duration: 0.12 }, t0 + 0.08);
+      st.fromTo(giant, { yPercent: 34, opacity: 0 },
+        { yPercent: 0, opacity: 1, duration: 0.3, ease: 'power3.out' }, t0 + 0.16);
+      st.fromTo(bottle, { y: () => window.innerHeight * 0.85, rotation: 10 },
+        { y: 0, rotation: 0, duration: 0.4, ease: 'back.out(1.25)' }, t0 + 0.14);
+      floats.forEach((f, fi) => {
+        st.fromTo(f, { x: () => outVec(f, 260).x, y: () => outVec(f, 260).y, scale: 0.4, opacity: 0 },
+          { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.32, ease: 'back.out(1.6)' }, t0 + 0.2 + fi * 0.028);
+      });
+      st.fromTo(info, { y: 36, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.26, stagger: 0.045, ease: 'power3.out' }, t0 + 0.26);
     }
 
     if (i < N - 1) {
-      // leave: bottle lifts away, floats scatter, text fades up
-      st.to(parts.bottle, { y: -170, rotation: -7, opacity: 0, duration: 0.4, ease: 'power2.in' }, i + 0.58);
-      st.to(parts.floats, { scale: 0.5, opacity: 0, duration: 0.28, stagger: 0.03 }, i + 0.6);
-      st.to(parts.text, { y: -26, opacity: 0, duration: 0.28, stagger: 0.03 }, i + 0.62);
-      st.to(slide, { opacity: 0, duration: 0.24, onComplete: () => gsap.set(slide, { visibility: 'hidden' }),
-        onReverseComplete: () => gsap.set(slide, { visibility: 'visible' }) }, i + 0.72);
-      st.to(watermark, { opacity: 0, y: -40, duration: 0.24 }, i + 0.6);
+      /* leave: bottle launches upward, ingredients scatter outward,
+         giant name lifts away, info drops out */
+      const t1 = i + 0.56;
+      st.to(bottle, { y: () => -window.innerHeight * 0.8, rotation: -9, duration: 0.36, ease: 'power2.in' }, t1);
+      floats.forEach((f, fi) => {
+        st.to(f, { x: () => outVec(f, 300).x, y: () => outVec(f, 300).y, scale: 0.45, opacity: 0,
+          duration: 0.3, ease: 'power2.in' }, t1 + 0.02 + fi * 0.024);
+      });
+      st.to(giant, { yPercent: -30, opacity: 0, duration: 0.28, ease: 'power2.in' }, t1 + 0.04);
+      st.to(info, { y: 30, opacity: 0, duration: 0.24, stagger: 0.03, ease: 'power2.in' }, t1 + 0.04);
+      st.to(slide, { opacity: 0, duration: 0.1,
+        onComplete: () => gsap.set(slide, { visibility: 'hidden' }),
+        onReverseComplete: () => gsap.set(slide, { visibility: 'visible' }) }, t1 + 0.32);
     }
   });
-  // hold the last slide for a beat before the pin releases
-  st.to({}, { duration: 0.35 }, N - 0.35);
+  // hold the last slide before the pin releases
+  st.to({}, { duration: 0.4 }, N - 0.4);
 
   /* ============ STORY ============ */
   gsap.utils.toArray('.st-rise').forEach(el => {

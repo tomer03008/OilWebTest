@@ -276,171 +276,165 @@ h1, h2, h3 {
 .line { display: block; overflow: clip; }
 .line__inner { display: block; }
 
-/* ============ SHOWCASE ============ */
+/* ============ SHOWCASE (ZestySip-style product stage) ============ */
 
 .showcase {
   position: relative;
   height: 100svh;
-  min-height: 620px;
+  min-height: 640px;
   overflow: clip;
 }
 
-.showcase__bg {
+.showcase__bg,
+.showcase__reveal {
   position: absolute;
   inset: 0;
-  background: #E7EBDC;
 }
-
-.showcase__watermark {
-  position: absolute;
-  inset-inline: 0;
-  top: 46%;
-  transform: translateY(-50%);
-  text-align: center;
-  font-family: var(--font-display);
-  font-size: clamp(7rem, 26vw, 24rem);
-  line-height: 1;
-  color: rgba(46, 54, 39, 0.07);
-  pointer-events: none;
-  user-select: none;
-  white-space: nowrap;
+.showcase__bg { background: #8FA573; }
+.showcase__reveal {
+  background: #DCAC52;
+  clip-path: circle(0% at 50% 58%);
 }
-.showcase.is-dark .showcase__watermark { color: rgba(247, 244, 237, 0.06); }
 
 .slide {
   position: absolute;
   inset: 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  padding: 5.5rem var(--gutter) 3rem;
-  max-width: 1500px;
-  margin-inline: auto;
   opacity: 0;
   visibility: hidden;
 }
 .slide.is-active { opacity: 1; visibility: visible; }
 
-.slide__text { position: relative; z-index: 3; max-width: 30rem; }
-
-.slide__label {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--olive);
-  font-feature-settings: 'tnum';
-  margin-bottom: 0.9rem;
-}
-
-.slide__name {
-  font-size: clamp(3rem, 7vw, 6rem);
+/* giant flavor name behind the bottle — the ZestySip signature */
+.slide__giant {
+  position: absolute;
+  inset-inline: 0;
+  top: 44%;
+  translate: 0 -50%; /* separate property — composes with GSAP transforms */
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: clamp(6rem, 21vw, 19rem);
   line-height: 1;
-  margin-bottom: 1.1rem;
+  color: rgba(247, 244, 237, 0.5);
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  z-index: 1;
 }
+.slide--dark .slide__giant { color: rgba(201, 162, 39, 0.34); }
 
-.slide__desc {
-  font-weight: 300;
-  font-size: 1.1rem;
-  color: var(--ink-soft);
-  margin-bottom: 1.3rem;
-}
-
-.slide__meta {
-  display: flex;
-  align-items: baseline;
-  gap: 1.2rem;
-  margin-bottom: 1.6rem;
-  font-feature-settings: 'tnum';
-}
-.slide__meta span { color: var(--ink-soft); font-size: 0.95rem; }
-.slide__meta strong { font-family: var(--font-display); font-weight: 400; font-size: 1.9rem; }
-
-.slide--dark { color: var(--cream-on-dark); }
-.slide--dark .slide__label { color: var(--gold-soft); }
-.slide--dark .slide__desc { color: var(--cream-on-dark-dim); }
-.slide--dark .slide__meta span { color: var(--cream-on-dark-dim); }
-
-/* outer div is driven by the scroll timeline; inner does the idle float.
-   height-constrained so the bottle can never collide with the copy. */
+/* the bottle: dead center, hero of the stage */
 .slide__bottle {
-  position: relative;
-  z-index: 2;
-  justify-self: center;
-  align-self: center;
+  position: absolute;
+  inset-inline: 0;
+  top: 47%;
+  translate: 0 -50%; /* separate property — composes with GSAP transforms */
   display: flex;
-  align-items: center;
   justify-content: center;
+  z-index: 3;
 }
 .bottle-inner {
-  height: min(62vh, 30rem);
-  filter: drop-shadow(0 34px 30px rgba(24, 29, 20, 0.28));
+  height: min(64vh, 34rem);
+  filter: drop-shadow(0 40px 34px rgba(24, 29, 20, 0.35));
 }
-.bottle-inner svg, .bottle-inner img {
+.bottle-inner img {
   height: 100%;
   width: auto;
   max-width: none;
 }
 
-.slide__floats { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+/* floating ingredients orbit the bottle at varied depths and angles */
+.slide__floats { position: absolute; inset: 0; pointer-events: none; }
 
-.float { position: absolute; will-change: transform; }
+.float {
+  position: absolute;
+  will-change: transform;
+  filter: drop-shadow(0 18px 22px rgba(24, 29, 20, 0.28));
+}
+.float--branch  { width: clamp(9rem, 17vw, 17rem);  inset-inline-end: 4%;  top: 6%;    rotate: -10deg; z-index: 2; }
+.float--corner  { width: clamp(5rem, 9vw, 9rem);    inset-inline-start: 6%; top: 10%;  rotate: 18deg;  z-index: 2; }
+.float--cluster { width: clamp(5.5rem, 10vw, 10rem); inset-inline-start: 26%; top: 56%; rotate: -6deg; z-index: 4; }
+.float--side-a  { width: clamp(6rem, 11vw, 11rem);  inset-inline-end: 23%; top: 47%;   rotate: 8deg;   z-index: 4; }
+.float--side-b  { width: clamp(4.5rem, 8vw, 8rem);  inset-inline-end: 10%; bottom: 9%; rotate: -18deg; z-index: 2; }
+.float--herbs   { width: clamp(4rem, 7vw, 7rem);    inset-inline-start: 12%; bottom: 7%; rotate: 12deg; z-index: 2; }
 
-.float--a { width: clamp(7rem, 15vw, 13rem); border-radius: 50%; inset-inline-end: 58%; top: 14%; box-shadow: 0 18px 40px rgba(24,29,20,0.18); }
-.float--b { width: clamp(5.5rem, 11vw, 10rem); border-radius: 50%; inset-inline-end: 30%; bottom: 10%; box-shadow: 0 14px 30px rgba(24,29,20,0.16); }
-.float--lemon { width: clamp(4.5rem, 9vw, 8rem); inset-inline-end: 30%; bottom: 12%; filter: drop-shadow(0 14px 22px rgba(24,29,20,0.3)); }
-.float--leaf { width: clamp(2rem, 3.5vw, 3rem); inset-inline-end: 64%; bottom: 24%; }
+/* product info: compact card, bottom start corner */
+.slide__info {
+  position: absolute;
+  inset-inline-start: var(--gutter);
+  bottom: clamp(1.5rem, 5vh, 3.5rem);
+  max-width: 24rem;
+  z-index: 5;
+  color: var(--ink);
+}
+.slide--dark .slide__info { color: var(--cream-on-dark); }
 
-.pill {
-  display: inline-block;
-  padding: 0.45rem 1.1rem;
-  border-radius: 999px;
-  background: rgba(247, 244, 237, 0.9);
-  border: 1px solid var(--line);
-  color: var(--olive);
-  font-size: 0.88rem;
+.slide__label {
+  font-size: 0.85rem;
   font-weight: 700;
-  box-shadow: 0 8px 22px rgba(24, 29, 20, 0.1);
+  font-feature-settings: 'tnum';
+  opacity: 0.75;
+  margin-bottom: 0.5rem;
+}
+
+.slide__desc {
+  font-weight: 400;
+  font-size: 1.02rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.slide__buy {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+.slide__price {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.8rem;
+  font-feature-settings: 'tnum';
   white-space: nowrap;
 }
-.pill--dark { background: rgba(46, 54, 39, 0.85); border-color: rgba(247,244,237,0.16); color: var(--cream-on-dark); }
-.pill--gold { background: var(--gold); border-color: var(--gold); color: var(--ink); }
-
-.float--p1 { inset-inline-end: 26%; top: 22%; }
-.float--p2 { inset-inline-end: 62%; top: 52%; }
-.float--p3 { inset-inline-end: 38%; top: 12%; }
+.slide__price span {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  opacity: 0.7;
+}
 
 .showcase__progress {
   position: absolute;
-  inset-inline-start: clamp(1rem, 2.5vw, 2.4rem);
+  inset-inline-end: clamp(1rem, 2.5vw, 2.4rem);
   top: 50%;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  z-index: 4;
+  z-index: 5;
 }
 .showcase__progress .dot {
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: rgba(46, 54, 39, 0.22);
+  background: rgba(46, 54, 39, 0.28);
   transition: background-color 0.3s var(--ease-hover), transform 0.3s var(--ease-spring);
 }
-.showcase__progress .dot.is-active { background: var(--gold); transform: scale(1.4); }
+.showcase__progress .dot.is-active { background: var(--cream); transform: scale(1.45); }
 .showcase.is-dark .showcase__progress .dot { background: rgba(247, 244, 237, 0.25); }
 .showcase.is-dark .showcase__progress .dot.is-active { background: var(--gold); }
 
-/* static / no-motion: slides become a simple stacked catalogue */
+/* static / no-motion: slides become a stacked catalogue, each with its color */
 html:not(.motion) .showcase { height: auto; min-height: 0; }
+html:not(.motion) .showcase__bg,
+html:not(.motion) .showcase__reveal { display: none; }
 html:not(.motion) .slide {
   position: relative;
   opacity: 1;
   visibility: visible;
-  min-height: 88vh;
+  min-height: 92vh;
+  background: var(--slide-bg);
 }
-html:not(.motion) .slide--dark { background: #262E20; }
-html:not(.motion) .showcase__watermark,
 html:not(.motion) .showcase__progress { display: none; }
-html:not(.motion) .showcase__bg { position: absolute; height: 100%; }
 
 /* ============ STORY ============ */
 
@@ -693,26 +687,26 @@ html.js.motion .hero__ctas { opacity: 0; }
 }
 
 @media (max-width: 900px) {
-  .slide {
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr auto;
-    padding-top: 5rem;
-    padding-bottom: 2.2rem;
-    row-gap: 1rem;
-  }
-  .slide__bottle { grid-row: 1; }
-  .bottle-inner { height: min(34vh, 15rem); }
-  .slide__text { grid-row: 2; max-width: none; }
-  .slide__name { font-size: clamp(2.4rem, 10vw, 3.4rem); margin-bottom: 0.6rem; }
-  .slide__desc { font-size: 1rem; margin-bottom: 0.9rem; }
-  .slide__meta { margin-bottom: 1rem; }
+  /* bottle sits higher, info block gets the bottom of the stage */
+  .slide__bottle { top: 40%; }
+  .bottle-inner { height: min(44vh, 21rem); }
+  .slide__giant { top: 37%; font-size: clamp(4.6rem, 24vw, 8rem); }
 
-  .float--a { width: clamp(5.5rem, 22vw, 8rem); inset-inline-end: 68%; top: 12%; }
-  .float--b, .float--lemon { inset-inline-end: 6%; bottom: auto; top: 34%; width: clamp(4.5rem, 18vw, 6.5rem); }
-  .float--p1 { inset-inline-end: 4%; top: 12%; }
-  .float--p2 { inset-inline-end: 70%; top: 44%; }
-  .float--p3 { display: none; }
-  .float--leaf { display: none; }
+  .float--branch  { width: clamp(6rem, 24vw, 9rem); inset-inline-end: 1%; top: 8%; }
+  .float--corner  { width: clamp(3.8rem, 15vw, 5.5rem); inset-inline-start: 3%; top: 12%; }
+  .float--cluster { width: clamp(4.2rem, 17vw, 6rem); inset-inline-start: 7%; top: 52%; }
+  .float--side-a  { width: clamp(4.5rem, 18vw, 6.5rem); inset-inline-end: 6%; top: 50%; }
+  .float--side-b,
+  .float--herbs   { display: none; }
+
+  .slide__info {
+    inset-inline: var(--gutter);
+    max-width: none;
+    bottom: 1.4rem;
+  }
+  .slide__desc { font-size: 0.95rem; margin-bottom: 0.7rem; }
+  .slide__buy { gap: 1rem; }
+  .slide__price { font-size: 1.5rem; }
 
   .visit__inner { grid-template-columns: 1fr; }
   .story__facts { grid-template-columns: repeat(2, 1fr); }
@@ -723,5 +717,5 @@ html.js.motion .hero__ctas { opacity: 0; }
   .nav__links { display: none; }
   .hero__title { font-size: clamp(2.7rem, 13vw, 4.5rem); }
   .drawer__content { width: 100vw; }
-  .showcase__progress { inset-inline-start: 0.8rem; }
+  .showcase__progress { inset-inline-end: 0.7rem; }
 }
