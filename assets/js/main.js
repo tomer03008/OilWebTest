@@ -57,63 +57,22 @@ if (motionOn) {
 
   /* --- hero entrance + slow drift out --- */
   gsap.timeline({ defaults: { ease: 'power3.out' } })
-    .fromTo('.hero__bg-media img', { scale: 1.1 }, { scale: 1, duration: 2.2, ease: 'power2.out' }, 0)
-    .fromTo('.hero__giant-text span', { opacity: 0, scale: 0.94, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 1.5, ease: 'power2.out' }, 0.1)
-    .fromTo('.hero__subject img', { opacity: 0, y: 160, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 1.6, ease: 'back.out(1.05)' }, 0.35)
-    .to('.hero__kicker .line__inner', { y: 0, duration: 0.9 }, 0.3)
-    .to('.hero__tagline .line__inner', { y: 0, duration: 1.0 }, 0.45)
-    .to('.hero__subtext .line__inner', { y: 0, duration: 0.9 }, 0.65)
-    .fromTo('.hero-pill', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, stagger: 0.12 }, 0.85)
-    .fromTo('.hero__scroll-line', { scaleY: 0 }, { scaleY: 1, duration: 1.2 }, 1.15);
+    .fromTo('.hero__media img', { scale: 1.08 }, { scale: 1, duration: 2.2, ease: 'power2.out' }, 0)
+    .to('.hero__kicker .line__inner', { y: 0, duration: 0.8 }, 0.25)
+    .to('.hero__title .line__inner', { y: 0, duration: 0.95, stagger: 0.12 }, 0.4)
+    .to('.hero__lede .line__inner', { y: 0, duration: 0.85, stagger: 0.1 }, 0.75)
+    .fromTo('.hero__ctas', { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.8 }, 1.05)
+    .to('.hero__rule', { scaleX: 1, duration: 1.1, ease: 'power2.inOut' }, 1.1);
 
-  // Parallax layers on scroll trigger (depth planes)
-  gsap.to('.hero__bg-media', {
+  // Parallax layers on scroll trigger
+  gsap.to('.hero__media', {
     yPercent: 12, ease: 'none',
     scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
   });
-  gsap.to('.hero__giant-text', {
-    yPercent: -15, ease: 'none',
-    scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
+  gsap.to('.hero__content', {
+    yPercent: -8, opacity: 0.3, ease: 'none',
+    scrollTrigger: { trigger: '.hero', start: '50% 35%', end: 'bottom top', scrub: true }
   });
-  gsap.to('.hero__subject', {
-    yPercent: -22, ease: 'none',
-    scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
-  });
-  gsap.to('.hero__content-overlay', {
-    yPercent: -6, opacity: 0.25, ease: 'none',
-    scrollTrigger: { trigger: '.hero', start: '40% 30%', end: 'bottom top', scrub: true }
-  });
-
-  // Mouse interaction parallax on desktop
-  const heroSec = document.querySelector('.hero');
-  if (heroSec) {
-    heroSec.addEventListener('mousemove', (e) => {
-      const { width, height } = heroSec.getBoundingClientRect();
-      const moveX = (e.clientX - width / 2) / (width / 2);
-      const moveY = (e.clientY - height / 2) / (height / 2);
-      
-      gsap.to('.hero__subject', {
-        x: moveX * 18,
-        y: moveY * 18,
-        duration: 1,
-        ease: 'power2.out'
-      });
-      gsap.to('.hero__giant-text', {
-        x: -moveX * 12,
-        y: -moveY * 12,
-        duration: 1,
-        ease: 'power2.out'
-      });
-    });
-    heroSec.addEventListener('mouseleave', () => {
-      gsap.to(['.hero__subject', '.hero__giant-text'], {
-        x: 0,
-        y: 0,
-        duration: 1.2,
-        ease: 'power3.out'
-      });
-    });
-  }
 
   /* ============ THE SHOWCASE — ZestySip-style stage ============ */
   const showcase = document.querySelector('.showcase');
