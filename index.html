@@ -36,52 +36,41 @@
   <main id="main">
 
     <!-- ================= HERO ================= -->
-    <section class="hero hero--magazine">
-      <div class="hero__magazine-layout">
-        
-        <!-- Column 1: Editorial text block (RTL: right side) -->
-        <div class="hero__block-text">
-          <p class="hero__kicker-label">בית בד משפחתי בגליל העליון</p>
-          <h1 class="hero__title-display">
-            <span class="line-mask"><span class="line-mask-inner">שמן של</span></span>
-            <span class="line-mask"><span class="line-mask-inner">מקום אחד.</span></span>
-          </h1>
-          <p class="hero__description">
-            <span class="line-mask"><span class="line-mask-inner">אלף ומאתיים עצי זית על מדרון אחד. קטיף ידני, כבישה קרה</span></span>
-            <span class="line-mask"><span class="line-mask-inner">באותו הלילה — ושמן שמריחים בו את העמק והאדמה.</span></span>
-          </p>
-          <div class="hero__annotations">
-            <a class="cta-annotation btn-press" href="#oils">
-              <span class="cta-annotation__text">לשלושת השמנים</span>
-              <span class="cta-annotation__line"></span>
-            </a>
-            <a class="cta-annotation cta-annotation--secondary btn-press" href="#story">
-              <span class="cta-annotation__text">הסיפור שלנו</span>
-              <span class="cta-annotation__line"></span>
-            </a>
-          </div>
-        </div>
-
-        <!-- Column 2: Layered visual scene (RTL: left side) -->
-        <div class="hero__block-visual">
-          <!-- Plane 1: Main background image frame -->
-          <div class="hero__frame-main">
-            <img src="assets/img/sunlit_grove.png" width="1600" height="1068" fetchpriority="high" alt="כרם אדר - כרמי זיתים בגליל העליון">
-          </div>
-          <!-- Plane 2: Foreground overlapping image frame -->
-          <div class="hero__frame-inset">
-            <img src="assets/img/harvest.jpg" width="300" height="400" alt="קטיף ידני של זיתים">
-            <span class="hero__frame-inset-tag">100% קטיף ידני</span>
-          </div>
-        </div>
-
+    <!-- ================= HERO ================= -->
+    <section class="hero hero--layered">
+      <!-- Background plane (Depth 1) -->
+      <div class="hero__bg-media" aria-hidden="true">
+        <img src="assets/img/sunlit_grove.png" width="1600" height="1068" fetchpriority="high" alt="">
       </div>
-
-      <!-- Foot bar remains clean, aligned with the magazine grid -->
-      <div class="hero__foot">
-        <span>גלילה למידע נוסף</span>
-        <span class="hero__rule" aria-hidden="true"></span>
-        <span>נטוע 1963 · מסיק תשפ"ו</span>
+      <div class="hero__scrim" aria-hidden="true"></div>
+      
+      <!-- Middle plane: Giant text (Depth 2) -->
+      <div class="hero__giant-text" aria-hidden="true">
+        <span>כרם אדר</span>
+      </div>
+      
+      <!-- Foreground subject: Centered bottle (Depth 3) -->
+      <div class="hero__subject">
+        <img src="assets/img/bottle-1.png" alt="בקבוק שמן זית כרם אדר סורי">
+      </div>
+      
+      <!-- Text and pill buttons overlay (Depth 4 - Bottom center) -->
+      <div class="hero__content-overlay">
+        <p class="hero__kicker"><span class="line"><span class="line__inner">בית בד משפחתי · הגליל העליון · נטוע 1963</span></span></p>
+        <h1 class="hero__tagline">
+          <span class="line"><span class="line__inner">שמן של מקום אחד.</span></span>
+        </h1>
+        <p class="hero__subtext"><span class="line"><span class="line__inner">אלף ומאתיים עצי זית על מדרון אחד. קטיף ידני וכבישה קרה באותו הלילה.</span></span></p>
+        <div class="hero__pills">
+          <a class="hero-pill btn-press" href="#oils">לשלושת השמנים</a>
+          <a class="hero-pill hero-pill--outline btn-press" href="#story">הסיפור שלנו</a>
+          <a class="hero-pill hero-pill--outline btn-press" href="#visit">ביקור בכרם</a>
+        </div>
+      </div>
+      
+      <!-- Scroll indicator line -->
+      <div class="hero__scroll-indicator" aria-hidden="true">
+        <span class="hero__scroll-line"></span>
       </div>
     </section>
 

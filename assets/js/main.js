@@ -57,27 +57,63 @@ if (motionOn) {
 
   /* --- hero entrance + slow drift out --- */
   gsap.timeline({ defaults: { ease: 'power3.out' } })
-    .fromTo('.hero__frame-main img', { scale: 1.15 }, { scale: 1, duration: 2.2, ease: 'power2.out' }, 0)
-    .to('.hero__title-display .line-mask-inner', { y: 0, duration: 1.1, stagger: 0.14 }, 0.15)
-    .to('.hero__description .line-mask-inner', { y: 0, duration: 0.9, stagger: 0.1 }, 0.45)
-    .fromTo('.hero__kicker-label', { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.8 }, 0.1)
-    .fromTo('.cta-annotation', { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.8, stagger: 0.12 }, 0.75)
-    .to('.hero__rule', { scaleX: 1, duration: 1.2, ease: 'power2.inOut' }, 0.9)
-    .fromTo('.hero__frame-inset', { opacity: 0, y: 50, scale: 0.95 }, { opacity: 1, y: 0, scale: 1, duration: 1.4, ease: 'power3.out' }, 0.5);
+    .fromTo('.hero__bg-media img', { scale: 1.1 }, { scale: 1, duration: 2.2, ease: 'power2.out' }, 0)
+    .fromTo('.hero__giant-text span', { opacity: 0, scale: 0.94, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 1.5, ease: 'power2.out' }, 0.1)
+    .fromTo('.hero__subject img', { opacity: 0, y: 160, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 1.6, ease: 'back.out(1.05)' }, 0.35)
+    .to('.hero__kicker .line__inner', { y: 0, duration: 0.9 }, 0.3)
+    .to('.hero__tagline .line__inner', { y: 0, duration: 1.0 }, 0.45)
+    .to('.hero__subtext .line__inner', { y: 0, duration: 0.9 }, 0.65)
+    .fromTo('.hero-pill', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, stagger: 0.12 }, 0.85)
+    .fromTo('.hero__scroll-line', { scaleY: 0 }, { scaleY: 1, duration: 1.2 }, 1.15);
 
   // Parallax layers on scroll trigger (depth planes)
-  gsap.to('.hero__frame-main', {
-    yPercent: 8, ease: 'none',
+  gsap.to('.hero__bg-media', {
+    yPercent: 12, ease: 'none',
     scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
   });
-  gsap.to('.hero__frame-inset', {
-    yPercent: -14, ease: 'none',
+  gsap.to('.hero__giant-text', {
+    yPercent: -15, ease: 'none',
     scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
   });
-  gsap.to('.hero__block-text', {
-    yPercent: -5, opacity: 0.35, ease: 'none',
+  gsap.to('.hero__subject', {
+    yPercent: -22, ease: 'none',
+    scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
+  });
+  gsap.to('.hero__content-overlay', {
+    yPercent: -6, opacity: 0.25, ease: 'none',
     scrollTrigger: { trigger: '.hero', start: '40% 30%', end: 'bottom top', scrub: true }
   });
+
+  // Mouse interaction parallax on desktop
+  const heroSec = document.querySelector('.hero');
+  if (heroSec) {
+    heroSec.addEventListener('mousemove', (e) => {
+      const { width, height } = heroSec.getBoundingClientRect();
+      const moveX = (e.clientX - width / 2) / (width / 2);
+      const moveY = (e.clientY - height / 2) / (height / 2);
+      
+      gsap.to('.hero__subject', {
+        x: moveX * 18,
+        y: moveY * 18,
+        duration: 1,
+        ease: 'power2.out'
+      });
+      gsap.to('.hero__giant-text', {
+        x: -moveX * 12,
+        y: -moveY * 12,
+        duration: 1,
+        ease: 'power2.out'
+      });
+    });
+    heroSec.addEventListener('mouseleave', () => {
+      gsap.to(['.hero__subject', '.hero__giant-text'], {
+        x: 0,
+        y: 0,
+        duration: 1.2,
+        ease: 'power3.out'
+      });
+    });
+  }
 
   /* ============ THE SHOWCASE — ZestySip-style stage ============ */
   const showcase = document.querySelector('.showcase');
