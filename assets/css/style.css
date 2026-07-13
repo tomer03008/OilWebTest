@@ -1222,15 +1222,9 @@ html.js.motion .hero__ctas { opacity: 0; }
   .slide__info {
     inset-inline: clamp(0.9rem, 3vw, 1.5rem);
     max-width: none;
-    /* 100vh reaches behind the mobile address bar — keep the card above it */
+    /* 100vh reaches behind the mobile address bar — keep the text above it */
     bottom: max(3.4rem, env(safe-area-inset-bottom));
-    padding: 0.9rem 1.1rem;
-    border-radius: var(--radius);
-    background: rgba(247, 244, 237, 0.55);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
   }
-  .slide--dark .slide__info { background: rgba(30, 38, 24, 0.5); }
   .slide__label { font-size: 0.78rem; margin-bottom: 0.3rem; }
   .slide__desc { font-size: 0.92rem; line-height: 1.5; margin-bottom: 0.7rem; }
   .slide__buy { gap: 0.9rem; justify-content: space-between; }
