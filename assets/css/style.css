@@ -566,10 +566,22 @@ h1, h2, h3 {
 
 .showcase {
   position: relative;
-  height: 100vh;  /* fallback */
-  height: 100dvh; /* fills the real visible screen on mobile, address bar included */
+  /* stable unit only — 100dvh recalculated mid-pin on phones, shrank the
+     stage below the screen height and exposed the page behind it */
+  height: 100vh;
   min-height: 640px;
   overflow: clip;
+  /* safety net: even if a bg layer ever hiccups, no bare page shows through */
+  background: #8FA573;
+  /* hard guard: a mid-resize ScrollTrigger refresh once locked width:0px
+     inline and wiped the stage on phones — stylesheet !important beats
+     inline styles, so the stage can never collapse again */
+  width: 100% !important;
+  max-width: 100% !important;
+}
+.pin-spacer {
+  width: 100% !important;
+  max-width: 100% !important;
 }
 
 .showcase__bg,
@@ -730,6 +742,74 @@ html:not(.motion) .slide {
   background: var(--slide-bg);
 }
 html:not(.motion) .showcase__progress { display: none; }
+
+/* ============ SEASONS ============ */
+
+.seasons { border-top: 1px solid var(--line); }
+
+.seasons__inner {
+  padding: var(--section-gap) var(--gutter);
+  max-width: 1500px;
+  margin-inline: auto;
+}
+
+.seasons__title { font-size: clamp(2.2rem, 5vw, 4rem); }
+
+.seasons__lede {
+  margin-top: 1rem;
+  font-weight: 300;
+  color: var(--ink-soft);
+  max-width: 32rem;
+  margin-bottom: clamp(2.5rem, 6vh, 4rem);
+}
+
+.seasons__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(1.2rem, 2.5vw, 2.2rem);
+}
+
+.season__photo {
+  overflow: clip;
+  border-radius: var(--radius);
+  aspect-ratio: 4 / 3;
+  margin-bottom: 1.1rem;
+}
+.season__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: filter 0.5s var(--ease-hover);
+}
+.season:hover .season__photo img { filter: saturate(1.18) brightness(1.05); }
+
+.season__kicker {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 0.35rem;
+}
+
+.season h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.4rem;
+  transition: color 0.3s var(--ease-hover);
+}
+.season:hover h3 { color: var(--olive); }
+
+.season p:not(.season__kicker) {
+  font-weight: 300;
+  font-size: 0.97rem;
+  line-height: 1.65;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 1024px) {
+  .seasons__grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .seasons__grid { grid-template-columns: 1fr; gap: 2rem; }
+}
 
 /* ============ STORY ============ */
 
@@ -1027,26 +1107,41 @@ html.js.motion .hero__ctas { opacity: 0; }
 }
 
 @media (max-width: 900px) {
-  /* bottle sits higher, info block gets the bottom of the stage */
-  .slide__bottle { top: 40%; }
-  .bottle-inner { height: min(44vh, 21rem); }
-  .slide__giant { top: 37%; font-size: clamp(4.6rem, 24vw, 8rem); }
+  /* mobile stage: bottle in the upper 2/3, giant name sized to actually
+     fit the screen, ingredients hugging the corners, info card at the
+     bottom with a readable backdrop */
+  .slide__bottle { top: 38%; }
+  .bottle-inner { height: min(42vh, 19rem); }
 
-  .float--branch  { width: clamp(6rem, 24vw, 9rem); inset-inline-end: 1%; top: 8%; }
-  .float--corner  { width: clamp(3.8rem, 15vw, 5.5rem); inset-inline-start: 3%; top: 12%; }
-  .float--cluster { width: clamp(4.2rem, 17vw, 6rem); inset-inline-start: 7%; top: 52%; }
-  .float--side-a  { width: clamp(4.5rem, 18vw, 6.5rem); inset-inline-end: 6%; top: 50%; }
+  .slide__giant {
+    top: 34%;
+    font-size: clamp(3.2rem, 17vw, 6rem);
+  }
+
+  .float--branch  { width: clamp(5.5rem, 22vw, 8rem);   inset-inline-end: 2%;   top: 9%; }
+  .float--corner  { width: clamp(3.4rem, 13vw, 5rem);   inset-inline-start: 4%; top: 11%; }
+  .float--cluster { width: clamp(3.8rem, 15vw, 5.5rem); inset-inline-start: 5%; top: 46%; }
+  .float--side-a  { width: clamp(4.2rem, 16vw, 6rem);   inset-inline-end: 5%;   top: 48%; }
   .float--side-b,
   .float--herbs   { display: none; }
 
   .slide__info {
-    inset-inline: var(--gutter);
+    inset-inline: clamp(0.9rem, 3vw, 1.5rem);
     max-width: none;
-    bottom: 1.4rem;
+    /* 100vh reaches behind the mobile address bar — keep the card above it */
+    bottom: max(3.4rem, env(safe-area-inset-bottom));
+    padding: 0.9rem 1.1rem;
+    border-radius: var(--radius);
+    background: rgba(247, 244, 237, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
   }
-  .slide__desc { font-size: 0.95rem; margin-bottom: 0.7rem; }
-  .slide__buy { gap: 1rem; }
-  .slide__price { font-size: 1.5rem; }
+  .slide--dark .slide__info { background: rgba(30, 38, 24, 0.5); }
+  .slide__label { font-size: 0.78rem; margin-bottom: 0.3rem; }
+  .slide__desc { font-size: 0.92rem; line-height: 1.5; margin-bottom: 0.7rem; }
+  .slide__buy { gap: 0.9rem; justify-content: space-between; }
+  .slide__price { font-size: 1.45rem; }
+  .slide__buy .btn { padding: 0.7rem 1.5rem; }
 
   .visit__inner { grid-template-columns: 1fr; }
   .story__facts { grid-template-columns: repeat(2, 1fr); }

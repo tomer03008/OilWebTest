@@ -53,6 +53,9 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 /* ============ MOTION ============ */
 if (motionOn) {
   gsap.registerPlugin(ScrollTrigger);
+  // mobile address-bar show/hide fires resize events mid-pin; refreshing
+  // during that re-measures the pinned stage at a bogus size (width 0).
+  ScrollTrigger.config({ ignoreMobileResize: true });
   if (lenis) lenis.on('scroll', ScrollTrigger.update);
 
   /* --- hero entrance + slow drift out --- */
@@ -248,7 +251,7 @@ if (motionOn) {
   }, { passive: true });
 
   // scrollspy: the section you're in keeps its nav link underlined
-  ['oils', 'pairings', 'story', 'visit'].forEach(id => {
+  ['oils', 'pairings', 'seasons', 'story', 'visit'].forEach(id => {
     const link = document.querySelector(`.nav__links a[href="#${id}"]`);
     if (!link || !document.getElementById(id)) return;
     ScrollTrigger.create({
@@ -316,11 +319,13 @@ if (motionOn) {
     });
   });
 
-  // pairing cards rise in one after the other
-  gsap.utils.toArray('.pairings__card').forEach((card, i) => {
+  // pairing cards and season cards rise in one after the other
+  gsap.utils.toArray('.pairings__card, .season').forEach((card) => {
+    const grid = card.parentElement;
+    const idx = [...grid.children].indexOf(card);
     gsap.from(card, {
-      y: 64, opacity: 0, duration: 0.9, delay: (i % 3) * 0.13, ease: 'power3.out',
-      scrollTrigger: { trigger: card.closest('.pairings__grid'), start: 'top 82%' }
+      y: 64, opacity: 0, duration: 0.9, delay: (idx % 4) * 0.12, ease: 'power3.out',
+      scrollTrigger: { trigger: grid, start: 'top 82%' }
     });
   });
 
