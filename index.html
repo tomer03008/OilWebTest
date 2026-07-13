@@ -244,50 +244,54 @@
         <p class="seasons__lede st-rise">שמן טוב לא נולד במסיק — הוא נבנה כל השנה.
         כך נראית שנה שלמה בין השורות של כרם אדר.</p>
 
-        <div class="seasons__grid">
-          <article class="season">
-            <figure class="season__photo">
-              <img src="assets/img/season-winter.jpg" width="1200" height="900" loading="lazy"
-                   alt="שורות עצי זית אחרי גיזום, ענפים גזומים על אדמה אדומה">
-            </figure>
-            <p class="season__kicker">חורף · דצמבר–פברואר</p>
-            <h3>הגיזום</h3>
-            <p>אנחנו פותחים את לב העץ לאור ולאוויר. ענף שנגזם נכון היום
-            הוא ליטר שמן בעוד שלוש שנים.</p>
-          </article>
+        <div class="seasons__panels" role="tablist" aria-label="עונות השנה בכרם">
+          <button class="season-panel is-active" type="button" role="tab" aria-selected="true">
+            <img src="assets/img/season-winter.jpg" alt="שורות עצי זית אחרי גיזום, ענפים גזומים על אדמה אדומה" loading="lazy">
+            <span class="season-panel__label" aria-hidden="true">חורף · הגיזום</span>
+            <span class="season-panel__num" aria-hidden="true">01</span>
+            <div class="season-panel__content">
+              <p class="season-panel__kicker">חורף · דצמבר–פברואר</p>
+              <h3>הגיזום</h3>
+              <p>אנחנו פותחים את לב העץ לאור ולאוויר. ענף שנגזם נכון היום
+              הוא ליטר שמן בעוד שלוש שנים.</p>
+            </div>
+          </button>
 
-          <article class="season">
-            <figure class="season__photo">
-              <img src="assets/img/season-spring.jpg" width="1200" height="800" loading="lazy"
-                   alt="פריחת זית — אשכולות פרחים לבנים זעירים בין עלים ירוקים">
-            </figure>
-            <p class="season__kicker">אביב · אפריל–מאי</p>
-            <h3>הפריחה</h3>
-            <p>הכרם מתכסה באלפי פרחים לבנים זעירים. שבועיים של ריח מסחרר —
-            ורק פרח אחד מעשרה יהפוך לזית.</p>
-          </article>
+          <button class="season-panel" type="button" role="tab" aria-selected="false">
+            <img src="assets/img/season-spring.jpg" alt="פריחת זית — אשכולות פרחים לבנים זעירים בין עלים ירוקים" loading="lazy">
+            <span class="season-panel__label" aria-hidden="true">אביב · הפריחה</span>
+            <span class="season-panel__num" aria-hidden="true">02</span>
+            <div class="season-panel__content">
+              <p class="season-panel__kicker">אביב · אפריל–מאי</p>
+              <h3>הפריחה</h3>
+              <p>הכרם מתכסה באלפי פרחים לבנים זעירים. שבועיים של ריח מסחרר —
+              ורק פרח אחד מעשרה יהפוך לזית.</p>
+            </div>
+          </button>
 
-          <article class="season">
-            <figure class="season__photo">
-              <img src="assets/img/season-summer.jpg" width="1200" height="800" loading="lazy"
-                   alt="זיתים ירוקים מבשילים על ענפי העץ בשמש הקיץ">
-            </figure>
-            <p class="season__kicker">קיץ · יוני–ספטמבר</p>
-            <h3>החנטה</h3>
-            <p>הפרי מתעבה לאט בשמש הגלילית. משקים במשורה בכוונה —
-            עץ שמתאמץ מעט נותן שמן מרוכז יותר.</p>
-          </article>
+          <button class="season-panel" type="button" role="tab" aria-selected="false">
+            <img src="assets/img/season-summer.jpg" alt="זיתים ירוקים מבשילים על ענפי העץ בשמש הקיץ" loading="lazy">
+            <span class="season-panel__label" aria-hidden="true">קיץ · החנטה</span>
+            <span class="season-panel__num" aria-hidden="true">03</span>
+            <div class="season-panel__content">
+              <p class="season-panel__kicker">קיץ · יוני–ספטמבר</p>
+              <h3>החנטה</h3>
+              <p>הפרי מתעבה לאט בשמש הגלילית. משקים במשורה בכוונה —
+              עץ שמתאמץ מעט נותן שמן מרוכז יותר.</p>
+            </div>
+          </button>
 
-          <article class="season">
-            <figure class="season__photo">
-              <img src="assets/img/season-autumn.jpg" width="1200" height="900" loading="lazy"
-                   alt="זיתים שנמסקו על רשת יוטה לצד ארגז קטיף">
-            </figure>
-            <p class="season__kicker">סתיו · אוקטובר–נובמבר</p>
-            <h3>המסיק</h3>
-            <p>הרשתות נפרשות, המסרקות עולות לעצים, והפרי נוסע לבית הבד
-            באותו הבוקר. השנה נסגרת בבקבוק.</p>
-          </article>
+          <button class="season-panel" type="button" role="tab" aria-selected="false">
+            <img src="assets/img/season-autumn.jpg" alt="זיתים שנמסקו על רשת יוטה לצד ארגז קטיף" loading="lazy">
+            <span class="season-panel__label" aria-hidden="true">סתיו · המסיק</span>
+            <span class="season-panel__num" aria-hidden="true">04</span>
+            <div class="season-panel__content">
+              <p class="season-panel__kicker">סתיו · אוקטובר–נובמבר</p>
+              <h3>המסיק</h3>
+              <p>הרשתות נפרשות, המסרקות עולות לעצים, והפרי נוסע לבית הבד
+              באותו הבוקר. השנה נסגרת בבקבוק.</p>
+            </div>
+          </button>
         </div>
       </div>
     </section>

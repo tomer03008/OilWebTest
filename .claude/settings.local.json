@@ -67,7 +67,8 @@
       "PowerShell(try { $r = Invoke-WebRequest -Uri \"https://api.openverse.org/v1/images/?q=ripe+olives+on+tree+branches&license_type=commercial&page_size=3\" -UseBasicParsing -TimeoutSec 25 -Headers @{\"User-Agent\"=\"KeremAdarSiteBuilder/1.0\"} -ErrorAction Stop; $j = $r.Content | ConvertFrom-Json; $i=0; foreach \\($res in $j.results\\) { $i++; try { Invoke-WebRequest -Uri $res.url -OutFile \"C:\\\\Users\\\\ADMIN\\\\Desktop\\\\ex\\\\assets\\\\img\\\\cand-summer-$i.jpg\" -UseBasicParsing -TimeoutSec 30 -Headers @{\"User-Agent\"=\"Mozilla/5.0\"} -ErrorAction Stop; \"summer-$i OK :: $\\($res.title\\)\" } catch { \"summer-$i FAIL\" } } } catch { \"QUERY_FAIL\" })",
       "PowerShell($edge = \"C:\\\\Program Files \\(x86\\)\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\"; if \\(-not \\(Test-Path $edge\\)\\) { $edge = \"C:\\\\Program Files\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\" }; & $edge --headless=new --disable-gpu --hide-scrollbars --window-size=1440,900 --virtual-time-budget=9000 --screenshot=\"C:\\\\Users\\\\ADMIN\\\\Desktop\\\\ex\\\\.shots\\\\seasons.png\" \"http://localhost:8642/?static#seasons\" 2>$null; Start-Sleep 3; Get-ChildItem C:\\\\Users\\\\ADMIN\\\\Desktop\\\\ex\\\\.shots\\\\seasons.png -ErrorAction SilentlyContinue | Select-Object Length)",
       "Bash(rm -f assets/img/cand-*.jpg)",
-      "Bash(git commit -q -m 'fix: mobile showcase stage + new seasons journal section *)"
+      "Bash(git commit -q -m 'fix: mobile showcase stage + new seasons journal section *)",
+      "Bash(git commit -q -m 'feat: seasons redesigned as expanding photo panels *)"
     ]
   }
 }

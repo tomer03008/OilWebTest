@@ -319,13 +319,11 @@ if (motionOn) {
     });
   });
 
-  // pairing cards and season cards rise in one after the other
-  gsap.utils.toArray('.pairings__card, .season').forEach((card) => {
-    const grid = card.parentElement;
-    const idx = [...grid.children].indexOf(card);
-    gsap.from(card, {
-      y: 64, opacity: 0, duration: 0.9, delay: (idx % 4) * 0.12, ease: 'power3.out',
-      scrollTrigger: { trigger: grid, start: 'top 82%' }
+  // season panels slide up into the stage one after the other
+  gsap.utils.toArray('.season-panel').forEach((panel, i) => {
+    gsap.from(panel, {
+      y: 70, opacity: 0, duration: 0.85, delay: i * 0.1, ease: 'power3.out',
+      scrollTrigger: { trigger: '.seasons__panels', start: 'top 84%' }
     });
   });
 
@@ -400,6 +398,49 @@ if (motionOn) {
 } else {
   document.querySelectorAll('.st-rise').forEach(el => { el.style.opacity = 1; el.style.transform = 'none'; });
 }
+
+/* ============ SEASONS — expanding panels ============ */
+(() => {
+  const panels = [...document.querySelectorAll('.season-panel')];
+  if (!panels.length) return;
+
+  let active = 0;
+  let autoplayOn = true;
+
+  const setActive = (i) => {
+    if (i === active) return;
+    active = i;
+    panels.forEach((p, pi) => {
+      p.classList.toggle('is-active', pi === i);
+      p.setAttribute('aria-selected', pi === i ? 'true' : 'false');
+    });
+  };
+
+  panels.forEach((p, i) => {
+    // hover opens on desktop, click/tap everywhere; any manual touch stops autoplay
+    p.addEventListener('mouseenter', () => {
+      if (window.matchMedia('(pointer: fine)').matches) { autoplayOn = false; setActive(i); }
+    });
+    p.addEventListener('click', () => { autoplayOn = false; setActive(i); });
+    p.addEventListener('focus', () => setActive(i));
+  });
+
+  // gentle autoplay while the section is on screen (motion allowed only)
+  if (motionOn && 'IntersectionObserver' in window) {
+    let timer = null;
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && autoplayOn) {
+        timer = setInterval(() => {
+          if (!autoplayOn) { clearInterval(timer); return; }
+          setActive((active + 1) % panels.length);
+        }, 3800);
+      } else {
+        clearInterval(timer);
+      }
+    }, { threshold: 0.45 });
+    io.observe(document.querySelector('.seasons__panels'));
+  }
+})();
 
 /* ============ ORDER DRAWER ============ */
 const drawer = document.getElementById('order-drawer');
