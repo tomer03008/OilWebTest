@@ -68,7 +68,11 @@
       "PowerShell($edge = \"C:\\\\Program Files \\(x86\\)\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\"; if \\(-not \\(Test-Path $edge\\)\\) { $edge = \"C:\\\\Program Files\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\" }; & $edge --headless=new --disable-gpu --hide-scrollbars --window-size=1440,900 --virtual-time-budget=9000 --screenshot=\"C:\\\\Users\\\\ADMIN\\\\Desktop\\\\ex\\\\.shots\\\\seasons.png\" \"http://localhost:8642/?static#seasons\" 2>$null; Start-Sleep 3; Get-ChildItem C:\\\\Users\\\\ADMIN\\\\Desktop\\\\ex\\\\.shots\\\\seasons.png -ErrorAction SilentlyContinue | Select-Object Length)",
       "Bash(rm -f assets/img/cand-*.jpg)",
       "Bash(git commit -q -m 'fix: mobile showcase stage + new seasons journal section *)",
-      "Bash(git commit -q -m 'feat: seasons redesigned as expanding photo panels *)"
+      "Bash(git commit -q -m 'feat: seasons redesigned as expanding photo panels *)",
+      "Bash(git commit -q -m 'fix: remove frosted backdrop rectangle behind mobile slide text *)",
+      "Bash(python scripts/key_out_bg.py \"assets/img/Minimalist_logo_design_olive_oil_202607151207.jpeg\" assets/img/logo-full.png 22)",
+      "Bash(rm -f assets/img/_t-logo-*.png assets/img/Minimalist_logo_design_olive_oil_202607151207.jpeg)",
+      "Bash(git commit -q -m 'feat: hand-drawn vector brand mark instead of AI logo image *)"
     ]
   }
 }

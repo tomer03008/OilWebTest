@@ -159,9 +159,8 @@ h1, h2, h3 {
   text-decoration: none;
 }
 .nav__leaf {
-  width: 1.05rem;
-  height: 1.05rem;
-  color: var(--gold-soft);
+  width: 1.5rem;
+  height: 1.5rem;
   transition: transform 0.45s var(--ease-spring);
 }
 .nav__brand:hover .nav__leaf { transform: rotate(-28deg); }
